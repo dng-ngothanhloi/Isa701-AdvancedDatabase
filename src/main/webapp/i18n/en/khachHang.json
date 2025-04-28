@@ -1,0 +1,33 @@
+{
+  "warehousMmgmtApp": {
+    "khachHang": {
+      "home": {
+        "title": "Khach Hangs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Khach Hang",
+        "createOrEditLabel": "Create or edit a Khach Hang",
+        "notFound": "No Khach Hangs found"
+      },
+      "created": "A new Khach Hang is created with identifier {{ param }}",
+      "updated": "A Khach Hang is updated with identifier {{ param }}",
+      "deleted": "A Khach Hang is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Khach Hang {{ id }}?"
+      },
+      "detail": {
+        "title": "Khach Hang"
+      },
+      "id": "ID",
+      "maKH": "Ma KH",
+      "tenKH": "Ten KH",
+      "goiTinh": "Goi Tinh",
+      "dateOfBirth": "Date Of Birth",
+      "diaChi": "Dia Chi",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

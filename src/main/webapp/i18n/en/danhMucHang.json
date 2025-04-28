@@ -1,0 +1,34 @@
+{
+  "warehousMmgmtApp": {
+    "danhMucHang": {
+      "home": {
+        "title": "Danh Muc Hangs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Danh Muc Hang",
+        "createOrEditLabel": "Create or edit a Danh Muc Hang",
+        "notFound": "No Danh Muc Hangs found"
+      },
+      "created": "A new Danh Muc Hang is created with identifier {{ param }}",
+      "updated": "A Danh Muc Hang is updated with identifier {{ param }}",
+      "deleted": "A Danh Muc Hang is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Danh Muc Hang {{ id }}?"
+      },
+      "detail": {
+        "title": "Danh Muc Hang"
+      },
+      "id": "ID",
+      "maHang": "Ma Hang",
+      "tenHang": "Ten Hang",
+      "donVitinh": "Don Vitinh",
+      "noiSanXuat": "Noi San Xuat",
+      "ngaySanXuat": "Ngay San Xuat",
+      "hanSuDung": "Han Su Dung",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

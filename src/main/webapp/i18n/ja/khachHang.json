@@ -1,0 +1,33 @@
+{
+  "warehousMmgmtApp": {
+    "khachHang": {
+      "home": {
+        "title": "KhachHangs",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Khach Hang の作成",
+        "createOrEditLabel": "Khach Hangの作成または編集",
+        "notFound": "Khach Hangs が見つかりません。"
+      },
+      "created": "新しい Khach Hang がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Khach Hang が更新されました。",
+      "deleted": "ID {{ param }} の Khach Hang が削除されました。",
+      "delete": {
+        "question": "Khach Hang {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Khach Hang"
+      },
+      "id": "ID",
+      "maKH": "Ma KH",
+      "tenKH": "Ten KH",
+      "goiTinh": "Goi Tinh",
+      "dateOfBirth": "Date Of Birth",
+      "diaChi": "Dia Chi",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

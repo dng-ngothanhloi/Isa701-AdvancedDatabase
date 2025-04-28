@@ -1,0 +1,32 @@
+{
+  "warehousMmgmtApp": {
+    "phieuNhapXuat": {
+      "home": {
+        "title": "Phieu Nhap Xuats",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Phieu Nhap Xuat",
+        "createOrEditLabel": "Create or edit a Phieu Nhap Xuat",
+        "notFound": "No Phieu Nhap Xuats found"
+      },
+      "created": "A new Phieu Nhap Xuat is created with identifier {{ param }}",
+      "updated": "A Phieu Nhap Xuat is updated with identifier {{ param }}",
+      "deleted": "A Phieu Nhap Xuat is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Phieu Nhap Xuat {{ id }}?"
+      },
+      "detail": {
+        "title": "Phieu Nhap Xuat"
+      },
+      "id": "ID",
+      "maPhieu": "Ma Phieu",
+      "ngayLapPhieu": "Ngay Lap Phieu",
+      "loaiPhieu": "Loai Phieu",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted",
+      "khachHang": "Khach Hang"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "warehousMmgmtApp": {
+    "masterdata": {
+      "home": {
+        "title": "Masterdata",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Masterdata",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Masterdata",
+        "notFound": "No Masterdata found"
+      },
+      "created": "Một Masterdata mới được tạo với định danh {{ param }}",
+      "updated": "Một Masterdata cập nhật với định danh {{ param }}",
+      "deleted": "Một Masterdata đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Masterdata {{ id }}?"
+      },
+      "detail": {
+        "title": "Masterdata"
+      },
+      "id": "ID",
+      "category": "Category",
+      "dataKey": "Data Key",
+      "dataValue": "Data Value",
+      "isDeleted": "Is Deleted",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By"
+    }
+  }
+}

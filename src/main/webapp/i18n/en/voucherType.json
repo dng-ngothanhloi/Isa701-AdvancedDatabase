@@ -1,0 +1,9 @@
+{
+  "warehousMmgmtApp": {
+    "VoucherType": {
+      "null": "",
+      "Nhap": "Nhap",
+      "Xuat": "Xuat"
+    }
+  }
+}

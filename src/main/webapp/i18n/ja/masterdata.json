@@ -1,0 +1,31 @@
+{
+  "warehousMmgmtApp": {
+    "masterdata": {
+      "home": {
+        "title": "Masterdata",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Masterdata の作成",
+        "createOrEditLabel": "Masterdataの作成または編集",
+        "notFound": "Masterdata が見つかりません。"
+      },
+      "created": "新しい Masterdata がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Masterdata が更新されました。",
+      "deleted": "ID {{ param }} の Masterdata が削除されました。",
+      "delete": {
+        "question": "Masterdata {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Masterdata"
+      },
+      "id": "ID",
+      "category": "Category",
+      "dataKey": "Data Key",
+      "dataValue": "Data Value",
+      "isDeleted": "Is Deleted",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By"
+    }
+  }
+}

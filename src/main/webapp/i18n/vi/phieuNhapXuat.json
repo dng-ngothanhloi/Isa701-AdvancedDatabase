@@ -1,0 +1,32 @@
+{
+  "warehousMmgmtApp": {
+    "phieuNhapXuat": {
+      "home": {
+        "title": "Phieu Nhap Xuats",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Phieu Nhap Xuat",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Phieu Nhap Xuat",
+        "notFound": "No Phieu Nhap Xuats found"
+      },
+      "created": "Một Phieu Nhap Xuat mới được tạo với định danh {{ param }}",
+      "updated": "Một Phieu Nhap Xuat cập nhật với định danh {{ param }}",
+      "deleted": "Một Phieu Nhap Xuat đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Phieu Nhap Xuat {{ id }}?"
+      },
+      "detail": {
+        "title": "Phieu Nhap Xuat"
+      },
+      "id": "ID",
+      "maPhieu": "Ma Phieu",
+      "ngayLapPhieu": "Ngay Lap Phieu",
+      "loaiPhieu": "Loai Phieu",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted",
+      "khachHang": "Khach Hang"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+enum VoucherType {
+  Nhap,Xuat
+}
+enum EmpSex {
+  Nam,Nu, KhongXacDinh
+}
+
+
+entity Masterdata(Masterdata) {
+    category String required maxlength(20),
+    dataKey String required unique maxlength(50),
+    dataValue String required maxlength(200),
+    isDeleted Boolean,
+    createdAt Instant,
+    createdBy String maxlength(50),
+    updatedAt Instant,
+    updatedBy String maxlength(50)
+}
+
+
+entity KhachHang(KhachHang) {
+    maKH String unique maxlength(10),
+    tenKH String required unique maxlength(50),
+    goiTinh EmpSex,
+    dateOfBirth LocalDate,
+    diaChi String maxlength(500),
+    createdAt Instant,
+    createdBy String maxlength(50),
+    updatedAt Instant,
+    updatedBy String maxlength(50),
+    isDeleted Boolean
+}
+
+entity DanhMucHang(DanhMucHang) {
+    maHang String unique maxlength(10),
+    tenHang String required maxlength(100),
+    donVitinh String maxlength(50),
+    noiSanXuat  String required maxlength(100),
+    ngaySanXuat LocalDate,
+    hanSuDung LocalDate,
+    createdAt Instant,
+    createdBy String maxlength(50),
+    updatedAt Instant,
+    updatedBy String maxlength(50),
+    isDeleted Boolean
+}
+
+entity PhieuNhapXuat(PhieuNhapXuat) {
+    maPhieu String unique maxlength(10),
+    ngayLapPhieu LocalDate,
+    loaiPhieu VoucherType,
+    createdAt Instant,
+    createdBy String maxlength(50),
+    updatedAt Instant,
+    updatedBy String maxlength(50),
+    isDeleted Boolean
+}
+
+entity ChiTietNhapXuat(ChiTietNhapXuat) {
+    soLuong Integer required,
+    donGia BigDecimal,
+    createdAt Instant,
+    createdBy String maxlength(50),
+    updatedAt Instant,
+    updatedBy String maxlength(50),
+    isDeleted Boolean
+}
+
+
+
+relationship ManyToOne {
+    PhieuNhapXuat{khachHang(id)} to KhachHang
+    ChiTietNhapXuat{phieuNhapXuat(id)} to PhieuNhapXuat
+    ChiTietNhapXuat{maHang(id)} to DanhMucHang
+}
+
+// No views were found for which JDL is to be generated. Please review console logs
+
+// Options
+service * with serviceClass
+
+paginate * with pagination
+
+dto * with mapstruct
