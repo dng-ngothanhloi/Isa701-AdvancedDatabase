@@ -30,6 +30,12 @@ that are well known and you can find references in the web.
 - `/src/main/docker` - Docker configurations for the application and services that the application depends on
 
 ## Development
+### Prerequisites
+- Must have Node package management: nmp & NodeJS Refer: https://nodejs.org/en/download
+- Must have Java 17 : https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+- Must have Maven 
+
+### Build the system
 
 The build system will install automatically the recommended version of Node and npm.
 
