@@ -1,0 +1,33 @@
+{
+  "warehouseMgmApp": {
+    "khachHang": {
+      "home": {
+        "title": "Quản lý Khách hàng",
+        "refreshListLabel": "làm mới danh sách",
+        "createLabel": "Thêm mới Khách hàng",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Khách hàng",
+        "notFound": "Không tìm thấy Khách Hàng"
+      },
+      "created": "Một Khách hàng mới được tạo với định danh {{ param }}",
+      "updated": "Một Khách hàng cập nhật với định danh {{ param }}",
+      "deleted": "Một Khách hàng đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Khách hàng {{ id }}?"
+      },
+      "detail": {
+        "title": "Khách hàng"
+      },
+      "id": "ID",
+      "maKH": "Mã Khách hàng",
+      "tenKH": "Tên Khách hàng",
+      "goiTinh": "Gới tính",
+      "dateOfBirth": "Ngày sinh",
+      "diaChi": "Địa chỉ",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

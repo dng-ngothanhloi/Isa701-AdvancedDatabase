@@ -1,0 +1,32 @@
+{
+  "warehouseMgmApp": {
+    "chiTietNhapXuat": {
+      "home": {
+        "title": "Chi Tiet Nhap Xuats",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Chi Tiet Nhap Xuat",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Chi Tiet Nhap Xuat",
+        "notFound": "No Chi Tiet Nhap Xuats found"
+      },
+      "created": "Một Chi Tết Nhập Xuất mới được tạo với định danh {{ param }}",
+      "updated": "Một Chi Tết Nhập Xuất cập nhật với định danh {{ param }}",
+      "deleted": "Một Chi Tết Nhập Xuất đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Chi Tiet Nhap Xuat {{ id }}?"
+      },
+      "detail": {
+        "title": "Chi Tiet Nhap Xuat"
+      },
+      "id": "ID",
+      "soLuong": "Số Lượng",
+      "donGia": "Đơn Giá",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted",
+      "phieuNhapXuat": "Phiếu Nhập Xuất",
+      "maHang": "Mã Hàng"
+    }
+  }
+}

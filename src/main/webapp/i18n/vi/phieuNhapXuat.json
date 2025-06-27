@@ -1,0 +1,32 @@
+{
+  "warehouseMgmApp": {
+    "phieuNhapXuat": {
+      "home": {
+        "title": "Quản lý Phiếu nhập/Xuất hàng",
+        "refreshListLabel": "Làm mới danh sách phiếu nhập/xuất",
+        "createLabel": "Thêm mới một nhập/Xuất hàng",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật nhập/Xuất hàng",
+        "notFound": "Không tìm thấy phiếu nhập/xuất hàng"
+      },
+      "created": "Một phiếu nhập/xuất mới được tạo với định danh {{ param }}",
+      "updated": "Một phiếu nhập/xuất được cập nhật với định danh {{ param }}",
+      "deleted": "Một phiếu nhập/xuất đã bị xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa phiếu nhập/xuất {{ id }}?"
+      },
+      "detail": {
+        "title": "Quản lý Phiếu nhập/Xuất hàng"
+      },
+      "id": "ID",
+      "maPhieu": "Mã phiếu",
+      "ngayLapPhieu": "Ngày lập phiếu",
+      "loaiPhieu": "Loai phiếu",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted",
+      "khachHang": "Khách hàng"
+    }
+  }
+}

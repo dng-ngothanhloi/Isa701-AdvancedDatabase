@@ -66,8 +66,9 @@ entity ChiTietNhapXuat(ChiTietNhapXuat) {
     isDeleted Boolean
 }
 
-
-
+// Note: Relationships are now handled through embedded documents instead of DBRef
+// The following relationships are maintained for JDL compatibility but will be implemented
+// as embedded objects in the actual MongoDB documents for better aggregation performance
 relationship ManyToOne {
     PhieuNhapXuat{khachHang(id)} to KhachHang
     ChiTietNhapXuat{phieuNhapXuat(id)} to PhieuNhapXuat

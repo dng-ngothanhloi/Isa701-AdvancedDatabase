@@ -1,0 +1,34 @@
+{
+  "warehouseMgmApp": {
+    "danhMucHang": {
+      "home": {
+        "title": "DanhMucHangs",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Danh Muc Hang の作成",
+        "createOrEditLabel": "Danh Muc Hangの作成または編集",
+        "notFound": "Danh Muc Hangs が見つかりません。"
+      },
+      "created": "新しい Danh Muc Hang がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Danh Muc Hang が更新されました。",
+      "deleted": "ID {{ param }} の Danh Muc Hang が削除されました。",
+      "delete": {
+        "question": "Danh Muc Hang {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Danh Muc Hang"
+      },
+      "id": "ID",
+      "maHang": "Ma Hang",
+      "tenHang": "Ten Hang",
+      "donVitinh": "Don Vitinh",
+      "noiSanXuat": "Noi San Xuat",
+      "ngaySanXuat": "Ngay San Xuat",
+      "hanSuDung": "Han Su Dung",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted"
+    }
+  }
+}

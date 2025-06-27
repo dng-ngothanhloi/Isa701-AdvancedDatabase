@@ -1,0 +1,9 @@
+{
+  "warehouseMgmApp": {
+    "VoucherType": {
+      "null": "",
+      "Nhap": "Nhập",
+      "Xuat": "Xuất"
+    }
+  }
+}

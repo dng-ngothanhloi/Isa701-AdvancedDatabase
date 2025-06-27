@@ -1,0 +1,10 @@
+{
+  "warehouseMgmApp": {
+    "EmpSex": {
+      "null": "",
+      "Nam": "Nam",
+      "Nu": "Nữ",
+      "KhongXacDinh": "Không xác định"
+    }
+  }
+}

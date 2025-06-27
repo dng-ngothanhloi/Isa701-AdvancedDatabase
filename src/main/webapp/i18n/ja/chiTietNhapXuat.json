@@ -1,0 +1,32 @@
+{
+  "warehouseMgmApp": {
+    "chiTietNhapXuat": {
+      "home": {
+        "title": "ChiTietNhapXuats",
+        "refreshListLabel": "リストの更新",
+        "createLabel": "Chi Tiet Nhap Xuat の作成",
+        "createOrEditLabel": "Chi Tiet Nhap Xuatの作成または編集",
+        "notFound": "Chi Tiet Nhap Xuats が見つかりません。"
+      },
+      "created": "新しい Chi Tiet Nhap Xuat がID {{ param }} で作成されました。",
+      "updated": "ID {{ param }} の Chi Tiet Nhap Xuat が更新されました。",
+      "deleted": "ID {{ param }} の Chi Tiet Nhap Xuat が削除されました。",
+      "delete": {
+        "question": "Chi Tiet Nhap Xuat {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Chi Tiet Nhap Xuat"
+      },
+      "id": "ID",
+      "soLuong": "So Luong",
+      "donGia": "Don Gia",
+      "createdAt": "Created At",
+      "createdBy": "Created By",
+      "updatedAt": "Updated At",
+      "updatedBy": "Updated By",
+      "isDeleted": "Is Deleted",
+      "phieuNhapXuat": "Phieu Nhap Xuat",
+      "maHang": "Ma Hang"
+    }
+  }
+}

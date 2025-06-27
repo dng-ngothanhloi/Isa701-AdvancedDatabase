@@ -1,0 +1,62 @@
+{
+  "annotations": {
+    "changelogDate": "20250428041036"
+  },
+  "applications": "*",
+  "dto": "mapstruct",
+  "entityTableName": "PhieuNhapXuat",
+  "fields": [
+    {
+      "fieldName": "maPhieu",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "maxlength"],
+      "fieldValidateRulesMaxlength": "10"
+    },
+    {
+      "fieldName": "ngayLapPhieu",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "loaiPhieu",
+      "fieldType": "VoucherType",
+      "fieldValues": "Nhap,Xuat"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "updatedAt",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "updatedBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "isDeleted",
+      "fieldType": "Boolean"
+    }
+  ],
+  "name": "PhieuNhapXuat",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "khachHang",
+      "relationshipName": "khachHang",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

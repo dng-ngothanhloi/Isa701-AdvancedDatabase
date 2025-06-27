@@ -1,0 +1,2 @@
+org.springframework.test.context.ContextCustomizerFactory = \
+    dtu.k30.msc.whm.config.TestContainersSpringContextCustomizerFactory
