@@ -5,6 +5,11 @@ module.exports = {
   // If this URL is left empty (""), then it will be relative to the current context.
   // If you use an API server, in `prod` mode, you will need to enable CORS
   // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
+  // SERVER_API_URL configuration with environment variable support
+  // Priority order:
+  // 1. SERVER_API_URL environment variable (highest priority)
+  // 2. NODE_ENV based configuration
+  // 3. Default empty string (relative to current context)
   SERVER_API_URL: (() => {
     // Check for explicit SERVER_API_URL environment variable
     if (process.env.SERVER_API_URL) {
