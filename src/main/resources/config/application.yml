@@ -145,6 +145,7 @@ spring:
       console-available: true
 
 server:
+  address: 0.0.0.0
   servlet:
     session:
       cookie:
