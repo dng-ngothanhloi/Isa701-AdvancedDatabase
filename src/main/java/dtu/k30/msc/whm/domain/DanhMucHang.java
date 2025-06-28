@@ -30,8 +30,8 @@ public class DanhMucHang implements Serializable {
     private String tenHang;
 
     @Size(max = 50)
-    @Field("don_vitinh")
-    private String donVitinh;
+    @Field("donvi_tinh")
+    private String donviTinh;
 
     @NotNull
     @Size(max = 100)
@@ -102,17 +102,17 @@ public class DanhMucHang implements Serializable {
         this.tenHang = tenHang;
     }
 
-    public String getDonVitinh() {
-        return this.donVitinh;
+    public String getDonviTinh() {
+        return this.donviTinh;
     }
 
-    public DanhMucHang donVitinh(String donVitinh) {
-        this.setDonVitinh(donVitinh);
+    public DanhMucHang donviTinh(String donviTinh) {
+        this.setDonviTinh(donviTinh);
         return this;
     }
 
-    public void setDonVitinh(String donVitinh) {
-        this.donVitinh = donVitinh;
+    public void setDonviTinh(String donviTinh) {
+        this.donviTinh = donviTinh;
     }
 
     public String getNoiSanXuat() {
@@ -245,7 +245,7 @@ public class DanhMucHang implements Serializable {
             "id=" + getId() +
             ", maHang='" + getMaHang() + "'" +
             ", tenHang='" + getTenHang() + "'" +
-            ", donVitinh='" + getDonVitinh() + "'" +
+            ", donviTinh='" + getDonviTinh() + "'" +
             ", noiSanXuat='" + getNoiSanXuat() + "'" +
             ", ngaySanXuat='" + getNgaySanXuat() + "'" +
             ", hanSuDung='" + getHanSuDung() + "'" +

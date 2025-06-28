@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service Implementation for managing {@link dtu.k30.msc.whm.domain.ChiTietNhapXuat}.
+ * Selective embedding: Uses embedded DTOs for performance optimization.
  */
 @Service
 public class ChiTietNhapXuatService {
@@ -140,7 +141,7 @@ public class ChiTietNhapXuatService {
                 dto.getPhieuNhapXuat().setMaPhieu(detailXuatNhap.getPhieuNhapXuat().getMaPhieu());
             }
             if (detailXuatNhap.getMaHang() != null) {
-                // Create DTO from embedded data
+                // Create embedded DTO from embedded data
                 dto.setMaHang(danhMucHangMapper.toDto(detailXuatNhap.getMaHang()));
             }
             return dto;
@@ -193,7 +194,7 @@ public class ChiTietNhapXuatService {
                 chiTietNhapXuatDTO.getPhieuNhapXuat().setMaPhieu(detailEntity.getPhieuNhapXuat().getMaPhieu());
             }
             if (detailEntity.getMaHang() != null) {
-                // Create DTO from embedded data
+                // Create embedded DTO from embedded data
                 chiTietNhapXuatDTO.setMaHang(danhMucHangMapper.toDto(detailEntity.getMaHang()));
             }
             results.add(chiTietNhapXuatDTO);

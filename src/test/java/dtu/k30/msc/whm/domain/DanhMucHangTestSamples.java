@@ -9,7 +9,7 @@ public class DanhMucHangTestSamples {
             .id("id1")
             .maHang("maHang1")
             .tenHang("tenHang1")
-            .donVitinh("donVitinh1")
+            .donviTinh("donviTinh1")
             .noiSanXuat("noiSanXuat1")
             .createdBy("createdBy1")
             .updatedBy("updatedBy1");
@@ -20,7 +20,7 @@ public class DanhMucHangTestSamples {
             .id("id2")
             .maHang("maHang2")
             .tenHang("tenHang2")
-            .donVitinh("donVitinh2")
+            .donviTinh("donviTinh2")
             .noiSanXuat("noiSanXuat2")
             .createdBy("createdBy2")
             .updatedBy("updatedBy2");
@@ -31,7 +31,7 @@ public class DanhMucHangTestSamples {
             .id(UUID.randomUUID().toString())
             .maHang(UUID.randomUUID().toString())
             .tenHang(UUID.randomUUID().toString())
-            .donVitinh(UUID.randomUUID().toString())
+            .donviTinh(UUID.randomUUID().toString())
             .noiSanXuat(UUID.randomUUID().toString())
             .createdBy(UUID.randomUUID().toString())
             .updatedBy(UUID.randomUUID().toString());

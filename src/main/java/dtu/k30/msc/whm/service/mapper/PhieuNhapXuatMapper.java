@@ -9,6 +9,7 @@ import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link PhieuNhapXuat} and its DTO {@link PhieuNhapXuatDTO}.
+ * Selective embedding: Only essential fields are mapped for performance optimization.
  */
 @Mapper(componentModel = "spring")
 public interface PhieuNhapXuatMapper extends EntityMapper<PhieuNhapXuatDTO, PhieuNhapXuat> {
@@ -27,5 +28,6 @@ public interface PhieuNhapXuatMapper extends EntityMapper<PhieuNhapXuatDTO, Phie
     @Mapping(target = "id", source = "id")
     @Mapping(target = "maKH", source = "maKH")
     @Mapping(target = "tenKH", source = "tenKH")
+    // Removed: goiTinh, dateOfBirth, diaChi for selective embedding
     KhachHangDTO toDtoKhachHangId(KhachHangEmbedded khachHangEmbedded);
 }

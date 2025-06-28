@@ -29,17 +29,13 @@ class ChiTietNhapXuatTest {
         ChiTietNhapXuat chiTietNhapXuat = getChiTietNhapXuatRandomSampleGenerator();
         PhieuNhapXuat phieuNhapXuatBack = getPhieuNhapXuatRandomSampleGenerator();
         
-        // Convert PhieuNhapXuat to PhieuNhapXuatEmbedded
+        // Convert PhieuNhapXuat to PhieuNhapXuatEmbedded with selective embedding
         PhieuNhapXuatEmbedded phieuNhapXuatEmbedded = new PhieuNhapXuatEmbedded();
         phieuNhapXuatEmbedded.setId(phieuNhapXuatBack.getId());
         phieuNhapXuatEmbedded.setMaPhieu(phieuNhapXuatBack.getMaPhieu());
         phieuNhapXuatEmbedded.setNgayLapPhieu(phieuNhapXuatBack.getNgayLapPhieu());
         phieuNhapXuatEmbedded.setLoaiPhieu(phieuNhapXuatBack.getLoaiPhieu());
-        phieuNhapXuatEmbedded.setCreatedAt(phieuNhapXuatBack.getCreatedAt());
-        phieuNhapXuatEmbedded.setCreatedBy(phieuNhapXuatBack.getCreatedBy());
-        phieuNhapXuatEmbedded.setUpdatedAt(phieuNhapXuatBack.getUpdatedAt());
-        phieuNhapXuatEmbedded.setUpdatedBy(phieuNhapXuatBack.getUpdatedBy());
-        phieuNhapXuatEmbedded.setIsDeleted(phieuNhapXuatBack.getIsDeleted());
+        // Removed: audit fields for selective embedding
 
         chiTietNhapXuat.setPhieuNhapXuat(phieuNhapXuatEmbedded);
         assertThat(chiTietNhapXuat.getPhieuNhapXuat()).isEqualTo(phieuNhapXuatEmbedded);
@@ -53,20 +49,13 @@ class ChiTietNhapXuatTest {
         ChiTietNhapXuat chiTietNhapXuat = getChiTietNhapXuatRandomSampleGenerator();
         DanhMucHang danhMucHangBack = getDanhMucHangRandomSampleGenerator();
         
-        // Convert DanhMucHang to DanhMucHangEmbedded
+        // Convert DanhMucHang to DanhMucHangEmbedded with selective embedding
         DanhMucHangEmbedded danhMucHangEmbedded = new DanhMucHangEmbedded();
         danhMucHangEmbedded.setId(danhMucHangBack.getId());
         danhMucHangEmbedded.setMaHang(danhMucHangBack.getMaHang());
         danhMucHangEmbedded.setTenHang(danhMucHangBack.getTenHang());
-        danhMucHangEmbedded.setDonVitinh(danhMucHangBack.getDonVitinh());
-        danhMucHangEmbedded.setNoiSanXuat(danhMucHangBack.getNoiSanXuat());
-        danhMucHangEmbedded.setNgaySanXuat(danhMucHangBack.getNgaySanXuat());
-        danhMucHangEmbedded.setHanSuDung(danhMucHangBack.getHanSuDung());
-        danhMucHangEmbedded.setCreatedAt(danhMucHangBack.getCreatedAt());
-        danhMucHangEmbedded.setCreatedBy(danhMucHangBack.getCreatedBy());
-        danhMucHangEmbedded.setUpdatedAt(danhMucHangBack.getUpdatedAt());
-        danhMucHangEmbedded.setUpdatedBy(danhMucHangBack.getUpdatedBy());
-        danhMucHangEmbedded.setIsDeleted(danhMucHangBack.getIsDeleted());
+        danhMucHangEmbedded.setDonviTinh(danhMucHangBack.getDonviTinh());
+        // Removed: noiSanXuat, ngaySanXuat, hanSuDung, audit fields for selective embedding
 
         chiTietNhapXuat.setMaHang(danhMucHangEmbedded);
         assertThat(chiTietNhapXuat.getMaHang()).isEqualTo(danhMucHangEmbedded);

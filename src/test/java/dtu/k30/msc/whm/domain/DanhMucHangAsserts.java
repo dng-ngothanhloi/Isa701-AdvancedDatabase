@@ -49,7 +49,7 @@ public class DanhMucHangAsserts {
             .as("Verify DanhMucHang relevant properties")
             .satisfies(a -> assertThat(a.getMaHang()).as("check maHang").isEqualTo(expected.getMaHang()))
             .satisfies(a -> assertThat(a.getTenHang()).as("check tenHang").isEqualTo(expected.getTenHang()))
-            .satisfies(a -> assertThat(a.getDonVitinh()).as("check donVitinh").isEqualTo(expected.getDonVitinh()))
+            .satisfies(a -> assertThat(a.getDonviTinh()).as("check donviTinh").isEqualTo(expected.getDonviTinh()))
             .satisfies(a -> assertThat(a.getNoiSanXuat()).as("check noiSanXuat").isEqualTo(expected.getNoiSanXuat()))
             .satisfies(a -> assertThat(a.getNgaySanXuat()).as("check ngaySanXuat").isEqualTo(expected.getNgaySanXuat()))
             .satisfies(a -> assertThat(a.getHanSuDung()).as("check hanSuDung").isEqualTo(expected.getHanSuDung()))

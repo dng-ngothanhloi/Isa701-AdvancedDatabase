@@ -7,6 +7,7 @@ import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link DanhMucHang} and its DTO {@link DanhMucHangDTO}.
+ * Selective embedding: Only essential fields are mapped for performance optimization.
  */
 @Mapper(componentModel = "spring")
 public interface DanhMucHangMapper extends EntityMapper<DanhMucHangDTO, DanhMucHang> {
@@ -15,9 +16,6 @@ public interface DanhMucHangMapper extends EntityMapper<DanhMucHangDTO, DanhMucH
     @Mapping(target = "id", source = "id")
     @Mapping(target = "maHang", source = "maHang")
     @Mapping(target = "tenHang", source = "tenHang")
-    @Mapping(target = "donVitinh", source = "donVitinh")
-    @Mapping(target = "noiSanXuat", source = "noiSanXuat")
-    @Mapping(target = "ngaySanXuat", source = "ngaySanXuat")
-    @Mapping(target = "hanSuDung", source = "hanSuDung")
+    @Mapping(target = "donviTinh", source = "donviTinh")
     DanhMucHangDTO toDto(DanhMucHangEmbedded danhMucHangEmbedded);
 }

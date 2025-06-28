@@ -12,6 +12,7 @@ import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link ChiTietNhapXuat} and its DTO {@link ChiTietNhapXuatDTO}.
+ * Selective embedding: Only essential fields are mapped for performance optimization.
  */
 @Mapper(componentModel = "spring")
 public interface ChiTietNhapXuatMapper extends EntityMapper<ChiTietNhapXuatDTO, ChiTietNhapXuat> {
@@ -42,9 +43,6 @@ public interface ChiTietNhapXuatMapper extends EntityMapper<ChiTietNhapXuatDTO, 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "maHang", source = "maHang")
     @Mapping(target = "tenHang", source = "tenHang")
-    @Mapping(target = "donVitinh", source = "donVitinh")
-    @Mapping(target = "noiSanXuat", source = "noiSanXuat")
-    @Mapping(target = "ngaySanXuat", source = "ngaySanXuat")
-    @Mapping(target = "hanSuDung", source = "hanSuDung")
+    @Mapping(target = "donviTinh", source = "donviTinh")
     DanhMucHangDTO toDtoDanhMucHangId(DanhMucHangEmbedded danhMucHangEmbedded);
 }

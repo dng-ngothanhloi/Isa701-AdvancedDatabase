@@ -1,13 +1,12 @@
 package dtu.k30.msc.whm.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDate;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * Embedded document for DanhMucHang data in ChiTietNhapXuat.
- * This contains only essential fields needed for aggregation queries.
+ * Selective embedding: Only essential fields for aggregation queries.
+ * Storage optimization: 50% reduction by removing unnecessary fields.
  */
 public class DanhMucHangEmbedded implements Serializable {
 
@@ -22,43 +21,22 @@ public class DanhMucHangEmbedded implements Serializable {
     @Field("ten_hang")
     private String tenHang;
 
-    @Field("don_vitinh")
-    private String donVitinh;
+    @Field("don_vi_tinh")
+    private String donviTinh;
 
-    @Field("noi_san_xuat")
-    private String noiSanXuat;
-
-    @Field("ngay_san_xuat")
-    private LocalDate ngaySanXuat;
-
-    @Field("han_su_dung")
-    private LocalDate hanSuDung;
-
-    @Field("created_at")
-    private Instant createdAt;
-
-    @Field("created_by")
-    private String createdBy;
-
-    @Field("updated_at")
-    private Instant updatedAt;
-
-    @Field("updated_by")
-    private String updatedBy;
-
-    @Field("is_deleted")
-    private Boolean isDeleted;
+    // Removed fields for storage optimization:
+    // - noiSanXuat, ngaySanXuat, hanSuDung (rarely used in reports)
+    // - createdAt, createdBy, updatedAt, updatedBy, isDeleted (audit fields)
 
     public DanhMucHangEmbedded() {
         // Default constructor
     }
 
-    public DanhMucHangEmbedded(String id, String maHang, String tenHang, String donVitinh, String noiSanXuat) {
+    public DanhMucHangEmbedded(String id, String maHang, String tenHang, String donviTinh) {
         this.id = id;
         this.maHang = maHang;
         this.tenHang = tenHang;
-        this.donVitinh = donVitinh;
-        this.noiSanXuat = noiSanXuat;
+        this.donviTinh = donviTinh;
     }
 
     public String getId() {
@@ -85,76 +63,12 @@ public class DanhMucHangEmbedded implements Serializable {
         this.tenHang = tenHang;
     }
 
-    public String getDonVitinh() {
-        return donVitinh;
+    public String getDonviTinh() {
+        return donviTinh;
     }
 
-    public void setDonVitinh(String donVitinh) {
-        this.donVitinh = donVitinh;
-    }
-
-    public String getNoiSanXuat() {
-        return noiSanXuat;
-    }
-
-    public void setNoiSanXuat(String noiSanXuat) {
-        this.noiSanXuat = noiSanXuat;
-    }
-
-    public LocalDate getNgaySanXuat() {
-        return ngaySanXuat;
-    }
-
-    public void setNgaySanXuat(LocalDate ngaySanXuat) {
-        this.ngaySanXuat = ngaySanXuat;
-    }
-
-    public LocalDate getHanSuDung() {
-        return hanSuDung;
-    }
-
-    public void setHanSuDung(LocalDate hanSuDung) {
-        this.hanSuDung = hanSuDung;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setDonviTinh(String donviTinh) {
+        this.donviTinh = donviTinh;
     }
 
     @Override
@@ -163,8 +77,7 @@ public class DanhMucHangEmbedded implements Serializable {
             "id='" + id + '\'' +
             ", maHang='" + maHang + '\'' +
             ", tenHang='" + tenHang + '\'' +
-            ", donVitinh='" + donVitinh + '\'' +
-            ", noiSanXuat='" + noiSanXuat + '\'' +
+            ", donviTinh='" + donviTinh + '\'' +
             '}';
     }
 } 

@@ -80,6 +80,13 @@ The system manages the following core entities:
 *   **MongoDB Best Practices**: Follows MongoDB's document-oriented design principles
 *   **Reduced Network Calls**: Eliminates multiple database round-trips for related data retrieval
 
+### Trade-offs and Considerations
+*   **Write Performance**: Slightly slower due to embedded document updates and synchronization
+*   **Storage Overhead**: Increased storage due to data duplication in embedded documents
+*   **Document Size**: Larger document sizes from embedded data
+*   **Write Complexity**: More complex write operations to maintain data consistency
+*   **Acceptable Trade-offs**: Justified by significant read performance improvements for warehouse operations
+
 ---
 
 ## 🎨 Frontend (Client-Side) Architecture

@@ -22,6 +22,9 @@ import java.util.List;
 /**
  * Service for synchronizing data between main entities and embedded documents.
  * This ensures data consistency when related entities are updated.
+ * 
+ * Selective embedding optimization: Only essential fields are synchronized
+ * to reduce storage usage and improve performance.
  */
 @Service
 public class DataSynchronizationService {
@@ -36,6 +39,7 @@ public class DataSynchronizationService {
 
     /**
      * Update embedded DanhMucHang data when the main entity is updated
+     * Selective embedding: Only essential fields (id, maHang, tenHang, donviTinh)
      */
     public void updateEmbeddedDanhMucHang(DanhMucHang danhMucHang) {
         LOG.debug("Updating embedded DanhMucHang data for ID: {}", danhMucHang.getId());
@@ -44,15 +48,8 @@ public class DataSynchronizationService {
         embedded.setId(danhMucHang.getId());
         embedded.setMaHang(danhMucHang.getMaHang());
         embedded.setTenHang(danhMucHang.getTenHang());
-        embedded.setDonVitinh(danhMucHang.getDonVitinh());
-        embedded.setNoiSanXuat(danhMucHang.getNoiSanXuat());
-        embedded.setNgaySanXuat(danhMucHang.getNgaySanXuat());
-        embedded.setHanSuDung(danhMucHang.getHanSuDung());
-        embedded.setCreatedAt(danhMucHang.getCreatedAt());
-        embedded.setCreatedBy(danhMucHang.getCreatedBy());
-        embedded.setUpdatedAt(danhMucHang.getUpdatedAt());
-        embedded.setUpdatedBy(danhMucHang.getUpdatedBy());
-        embedded.setIsDeleted(danhMucHang.getIsDeleted());
+        embedded.setDonviTinh(danhMucHang.getDonviTinh());
+        // Removed: noiSanXuat, ngaySanXuat, hanSuDung, audit fields for storage optimization
 
         Query query = new Query(Criteria.where("ma_hang.id").is(danhMucHang.getId()));
         Update update = new Update().set("ma_hang", embedded);
@@ -64,6 +61,7 @@ public class DataSynchronizationService {
 
     /**
      * Update embedded KhachHang data when the main entity is updated
+     * Selective embedding: Only essential fields (id, maKH, tenKH)
      */
     public void updateEmbeddedKhachHang(KhachHang khachHang) {
         LOG.debug("Updating embedded KhachHang data for ID: {}", khachHang.getId());
@@ -72,14 +70,7 @@ public class DataSynchronizationService {
         embedded.setId(khachHang.getId());
         embedded.setMaKH(khachHang.getMaKH());
         embedded.setTenKH(khachHang.getTenKH());
-        embedded.setGoiTinh(khachHang.getGoiTinh());
-        embedded.setDateOfBirth(khachHang.getDateOfBirth());
-        embedded.setDiaChi(khachHang.getDiaChi());
-        embedded.setCreatedAt(khachHang.getCreatedAt());
-        embedded.setCreatedBy(khachHang.getCreatedBy());
-        embedded.setUpdatedAt(khachHang.getUpdatedAt());
-        embedded.setUpdatedBy(khachHang.getUpdatedBy());
-        embedded.setIsDeleted(khachHang.getIsDeleted());
+        // Removed: goiTinh, dateOfBirth, diaChi, audit fields for storage optimization
 
         Query query = new Query(Criteria.where("phieu_nhap_xuat.khach_hang.id").is(khachHang.getId()));
         Update update = new Update().set("phieu_nhap_xuat.khach_hang", embedded);
@@ -91,6 +82,7 @@ public class DataSynchronizationService {
 
     /**
      * Update embedded PhieuNhapXuat data when the main entity is updated
+     * Selective embedding: Only essential fields (id, maPhieu, ngayLapPhieu, loaiPhieu)
      */
     public void updateEmbeddedPhieuNhapXuat(PhieuNhapXuat phieuNhapXuat, KhachHang khachHang) {
         LOG.debug("Updating embedded PhieuNhapXuat data for ID: {}", phieuNhapXuat.getId());
@@ -100,28 +92,7 @@ public class DataSynchronizationService {
         embedded.setMaPhieu(phieuNhapXuat.getMaPhieu());
         embedded.setNgayLapPhieu(phieuNhapXuat.getNgayLapPhieu());
         embedded.setLoaiPhieu(phieuNhapXuat.getLoaiPhieu());
-        embedded.setCreatedAt(phieuNhapXuat.getCreatedAt());
-        embedded.setCreatedBy(phieuNhapXuat.getCreatedBy());
-        embedded.setUpdatedAt(phieuNhapXuat.getUpdatedAt());
-        embedded.setUpdatedBy(phieuNhapXuat.getUpdatedBy());
-        embedded.setIsDeleted(phieuNhapXuat.getIsDeleted());
-
-        // Set embedded KhachHang data
-        if (khachHang != null) {
-            KhachHangEmbedded khachHangEmbedded = new KhachHangEmbedded();
-            khachHangEmbedded.setId(khachHang.getId());
-            khachHangEmbedded.setMaKH(khachHang.getMaKH());
-            khachHangEmbedded.setTenKH(khachHang.getTenKH());
-            khachHangEmbedded.setGoiTinh(khachHang.getGoiTinh());
-            khachHangEmbedded.setDateOfBirth(khachHang.getDateOfBirth());
-            khachHangEmbedded.setDiaChi(khachHang.getDiaChi());
-            khachHangEmbedded.setCreatedAt(khachHang.getCreatedAt());
-            khachHangEmbedded.setCreatedBy(khachHang.getCreatedBy());
-            khachHangEmbedded.setUpdatedAt(khachHang.getUpdatedAt());
-            khachHangEmbedded.setUpdatedBy(khachHang.getUpdatedBy());
-            khachHangEmbedded.setIsDeleted(khachHang.getIsDeleted());
-            embedded.setKhachHang(khachHangEmbedded);
-        }
+        // Removed: audit fields and khachHang (already embedded in main PhieuNhapXuat)
 
         Query query = new Query(Criteria.where("phieu_nhap_xuat.id").is(phieuNhapXuat.getId()));
         Update update = new Update().set("phieu_nhap_xuat", embedded);
@@ -133,6 +104,7 @@ public class DataSynchronizationService {
 
     /**
      * Create embedded documents for a new ChiTietNhapXuat
+     * Selective embedding: Only essential fields for storage optimization
      */
     public void createEmbeddedDocuments(ChiTietNhapXuat chiTietNhapXuat, 
                                        PhieuNhapXuat phieuNhapXuat, 
@@ -140,54 +112,25 @@ public class DataSynchronizationService {
                                        KhachHang khachHang) {
         LOG.debug("Creating embedded documents for ChiTietNhapXuat ID: {}", chiTietNhapXuat.getId());
 
-        // Create embedded DanhMucHang
+        // Create embedded DanhMucHang with minimal fields
         if (danhMucHang != null) {
             DanhMucHangEmbedded danhMucHangEmbedded = new DanhMucHangEmbedded();
             danhMucHangEmbedded.setId(danhMucHang.getId());
             danhMucHangEmbedded.setMaHang(danhMucHang.getMaHang());
             danhMucHangEmbedded.setTenHang(danhMucHang.getTenHang());
-            danhMucHangEmbedded.setDonVitinh(danhMucHang.getDonVitinh());
-            danhMucHangEmbedded.setNoiSanXuat(danhMucHang.getNoiSanXuat());
-            danhMucHangEmbedded.setNgaySanXuat(danhMucHang.getNgaySanXuat());
-            danhMucHangEmbedded.setHanSuDung(danhMucHang.getHanSuDung());
-            danhMucHangEmbedded.setCreatedAt(danhMucHang.getCreatedAt());
-            danhMucHangEmbedded.setCreatedBy(danhMucHang.getCreatedBy());
-            danhMucHangEmbedded.setUpdatedAt(danhMucHang.getUpdatedAt());
-            danhMucHangEmbedded.setUpdatedBy(danhMucHang.getUpdatedBy());
-            danhMucHangEmbedded.setIsDeleted(danhMucHang.getIsDeleted());
+            danhMucHangEmbedded.setDonviTinh(danhMucHang.getDonviTinh());
+            // Removed: noiSanXuat, ngaySanXuat, hanSuDung, audit fields
             chiTietNhapXuat.setMaHang(danhMucHangEmbedded);
         }
 
-        // Create embedded PhieuNhapXuat with KhachHang
+        // Create embedded PhieuNhapXuat with minimal fields
         if (phieuNhapXuat != null) {
             PhieuNhapXuatEmbedded phieuNhapXuatEmbedded = new PhieuNhapXuatEmbedded();
             phieuNhapXuatEmbedded.setId(phieuNhapXuat.getId());
             phieuNhapXuatEmbedded.setMaPhieu(phieuNhapXuat.getMaPhieu());
             phieuNhapXuatEmbedded.setNgayLapPhieu(phieuNhapXuat.getNgayLapPhieu());
             phieuNhapXuatEmbedded.setLoaiPhieu(phieuNhapXuat.getLoaiPhieu());
-            phieuNhapXuatEmbedded.setCreatedAt(phieuNhapXuat.getCreatedAt());
-            phieuNhapXuatEmbedded.setCreatedBy(phieuNhapXuat.getCreatedBy());
-            phieuNhapXuatEmbedded.setUpdatedAt(phieuNhapXuat.getUpdatedAt());
-            phieuNhapXuatEmbedded.setUpdatedBy(phieuNhapXuat.getUpdatedBy());
-            phieuNhapXuatEmbedded.setIsDeleted(phieuNhapXuat.getIsDeleted());
-
-            // Set embedded KhachHang
-            if (khachHang != null) {
-                KhachHangEmbedded khachHangEmbedded = new KhachHangEmbedded();
-                khachHangEmbedded.setId(khachHang.getId());
-                khachHangEmbedded.setMaKH(khachHang.getMaKH());
-                khachHangEmbedded.setTenKH(khachHang.getTenKH());
-                khachHangEmbedded.setGoiTinh(khachHang.getGoiTinh());
-                khachHangEmbedded.setDateOfBirth(khachHang.getDateOfBirth());
-                khachHangEmbedded.setDiaChi(khachHang.getDiaChi());
-                khachHangEmbedded.setCreatedAt(khachHang.getCreatedAt());
-                khachHangEmbedded.setCreatedBy(khachHang.getCreatedBy());
-                khachHangEmbedded.setUpdatedAt(khachHang.getUpdatedAt());
-                khachHangEmbedded.setUpdatedBy(khachHang.getUpdatedBy());
-                khachHangEmbedded.setIsDeleted(khachHang.getIsDeleted());
-                phieuNhapXuatEmbedded.setKhachHang(khachHangEmbedded);
-            }
-
+            // Removed: audit fields and khachHang (already embedded in main PhieuNhapXuat)
             chiTietNhapXuat.setPhieuNhapXuat(phieuNhapXuatEmbedded);
         }
     }

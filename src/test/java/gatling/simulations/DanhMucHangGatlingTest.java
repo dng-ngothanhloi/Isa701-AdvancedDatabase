@@ -70,7 +70,7 @@ public class DanhMucHangGatlingTest extends Simulation {
                                 "{" +
                                 "\"maHang\": \"SAMPLE_TEXT\"" +
                                 ", \"tenHang\": \"SAMPLE_TEXT\"" +
-                                ", \"donVitinh\": \"SAMPLE_TEXT\"" +
+                                ", \"donviTinh\": \"SAMPLE_TEXT\"" +
                                 ", \"noiSanXuat\": \"SAMPLE_TEXT\"" +
                                 ", \"ngaySanXuat\": \"2020-01-01T00:00:00.000Z\"" +
                                 ", \"hanSuDung\": \"2020-01-01T00:00:00.000Z\"" +

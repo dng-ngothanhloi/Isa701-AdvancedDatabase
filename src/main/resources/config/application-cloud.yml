@@ -1,0 +1,119 @@
+# ===================================================================
+# Spring Boot configuration for the "cloud" profile.
+#
+# This configuration is designed for cloud environments like:
+# - GitHub Codespaces
+# - AWS, Azure, GCP
+# - Docker containers
+# - Any public IP deployment
+#
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+logging:
+  level:
+    ROOT: INFO
+    tech.jhipster: INFO
+    dtu.k30.msc.whm: INFO
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: INFO
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+  jackson:
+    serialization:
+      indent-output: false
+  data:
+    mongodb:
+      uri: mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/warehoure?retryWrites=true&w=majority&appName=Cluster0&tls=true
+  mail:
+    host: localhost
+    port: 25
+    username:
+    password:
+  messages:
+    cache-duration: PT1H # 1 hour for production
+  thymeleaf:
+    cache: true
+
+server:
+  port: 8080
+  # Allow binding to all interfaces for cloud deployment
+  address: 0.0.0.0
+  shutdown: graceful
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,application/javascript,application/json,image/svg+xml
+    min-response-size: 1024
+
+# ===================================================================
+# JHipster specific properties
+#
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+jhipster:
+  http:
+    cache: # Used by the CachingHttpHeadersFilter
+      timeToLiveInDays: 1461
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 1000 # Number of objects in each cache entry
+  # CORS configuration for cloud environments
+  cors:
+    # Allow all origins for cloud deployment (you can restrict this based on your needs)
+    allowed-origins: '*'
+    # Alternative: restrict to specific domains
+    # allowed-origins: 'https://your-domain.com,https://*.githubpreview.dev,https://*.codespaces.dev'
+    # Enable CORS for GitHub Codespaces and other cloud platforms
+    allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.cloudflare.dev,https://*.vercel.app,https://*.netlify.app'
+    allowed-methods: '*'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
+    allow-credentials: true
+    max-age: 1800
+  security:
+    authentication:
+      jwt:
+        # This token must be encoded using Base64 and be at least 256 bits long
+        # For production, change this secret and store it securely
+        base64-secret: ODdlM2ExNTNjNWQwOTVlODJkYjBmMmIyMjRlYzQ5ZmM0ZWQ4MTNlMGM0M2JjNTQ0NjgwNDNhOTk4MDc5ZTRjZDhjMDhjNjJjNmYxMGRmOTg2ZmRkNGM0NTdjZGVkZDUwMzYxMTRhY2M5ZGM2OTMwMjQwNGViMzA3MTk3NWY1NTc=
+        # Token is valid 24 hours
+        token-validity-in-seconds: 86400
+        token-validity-in-seconds-for-remember-me: 2592000
+  mail: # specific JHipster mail property, for standard properties see MailProperties
+    base-url: ${SERVER_URL:http://localhost:8080} # Use environment variable for dynamic URL
+  logging:
+    use-json-format: true # Use JSON format for cloud logging
+    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+      enabled: false
+      host: localhost
+      port: 5000
+      ring-buffer-size: 512
+
+# ===================================================================
+# Application specific properties
+# Add your own application properties here, see the ApplicationProperties class
+# to have type-safe configuration, like in the JHipsterProperties above
+#
+# More documentation is available at:
+# https://www.jhipster.tech/common-application-properties/
+# ===================================================================
+
+# application: 

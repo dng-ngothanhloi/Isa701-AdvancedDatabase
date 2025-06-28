@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * A DTO for the {@link dtu.k30.msc.whm.domain.ChiTietNhapXuat} entity.
+ * Selective embedding: Uses DTOs for performance optimization.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class ChiTietNhapXuatDTO implements Serializable {

@@ -630,13 +630,18 @@ dataSynchronizationService.updateEmbeddedPhieuNhapXuat(phieuNhapXuat, khachHang)
 
 ### Write Performance
 - ⚠️ **Slightly slower** due to embedded document updates
+- ⚠️ **Multiple document updates** when main entities change
+- ⚠️ **Increased write complexity** for maintaining data consistency
 - ✅ **Acceptable trade-off** for read-heavy warehouse operations
-- ✅ **Optimized with bulk operations**
+- ✅ **Optimized with bulk operations** and DataSynchronizationService
 
 ### Storage Considerations
 - ⚠️ **Increased storage** due to data duplication
+- ⚠️ **Document size growth** from embedded data
+- ⚠️ **Potential storage overhead** for large embedded documents
 - ✅ **Manageable** for typical warehouse data volumes
 - ✅ **Better query performance** justifies storage cost
+- ✅ **Compression benefits** from MongoDB's document storage
 
 ## Best Practices
 
