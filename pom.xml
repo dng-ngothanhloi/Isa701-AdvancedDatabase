@@ -1115,15 +1115,16 @@
                                 </goals>
                             </execution>
                             <execution>
-                                <id>webapp build dev</id>
+                                <id>webapp build smart</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webapp:build</arguments>
+                                    <arguments>run webapp:build:smart</arguments>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
+                                        <SPRING_PROFILES_ACTIVE>${spring.profiles.active}</SPRING_PROFILES_ACTIVE>
                                     </environmentVariables>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
