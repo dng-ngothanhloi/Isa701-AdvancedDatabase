@@ -583,24 +583,99 @@ Nếu gặp vấn đề với CORS hoặc cloud deployment:
 ## 🚀 **QUICK START FOR CLOUD**
 
 ```bash
-# 1. Load cloud environment
-export $(cat env.cloud | grep -v '^#' | xargs)
+# 1. Kiểm tra hiện tại
+./check-environment.sh
 
-# 2. Test API configuration
-./test-api-config.sh
+# 2. Load environment cần thiết
+./load-and-test-env.sh dev    # hoặc cloud
 
-# 3. Build application
+# 3. Kiểm tra lại
+./check-environment.sh
+
+# 4. Build frontend
 npm run webapp:build
 
-# 4. Start with cloud profile
-./mvnw spring-boot:run -Dspring.profiles.active=cloud
+# 5. Start backend
+./mvnw spring-boot:run        # hoặc với -Dspring.profiles.active=cloud
+```
 
-# 5. Test CORS
-./test-cors.sh
+## 🔍 **HƯỚNG DẪN KIỂM TRA BIẾN MÔI TRƯỜNG**
 
-# 6. Run migration
-curl -X POST http://localhost:8080/api/selective-embedding-migration/migrate
+Tôi đã tạo 2 script để giúp bạn kiểm tra và load biến môi trường một cách dễ dàng:
 
-# 7. Verify results
-curl -X GET http://localhost:8080/api/selective-embedding-migration/stats
-``` 
+### **1. Kiểm tra biến môi trường hiện tại**
+```bash
+./check-environment.sh
+```
+
+**Kết quả mong đợi:**
+- Nếu chưa load: `NODE_ENV: NOT SET`
+- Nếu đã load dev: `NODE_ENV: development`, `SERVER_API_URL: http://localhost:8080/`
+- Nếu đã load cloud: `NODE_ENV: cloud`, `SERVER_API_URL: https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/`
+
+### **2. Load và test environment**
+```bash
+# Load development environment
+./load-and-test-env.sh dev
+
+# Load cloud environment  
+./load-and-test-env.sh cloud
+
+# Test environment hiện tại
+./load-and-test-env.sh test
+```
+
+### **3. Kiểm tra thủ công**
+
+**Kiểm tra biến môi trường:**
+```bash
+echo $NODE_ENV
+echo $SERVER_API_URL
+echo $ENVIRONMENT
+```
+
+**Kiểm tra webpack configuration:**
+```bash
+node -e "const env = require('./webpack/environment.js'); console.log('SERVER_API_URL:', env.SERVER_API_URL);"
+```
+
+### **4. Cách load environment thủ công**
+
+**Development:**
+```bash
+export $(cat env.development | grep -v '^#' | xargs)
+```
+
+**Cloud:**
+```bash
+export $(cat env.cloud | grep -v '^#' | xargs)
+```
+
+### **5. Dấu hiệu nhận biết environment**
+
+| Environment | NODE_ENV | SERVER_API_URL | CLOUD_DEPLOYMENT |
+|-------------|----------|----------------|------------------|
+| **Development** | `development` | `http://localhost:8080/` | `false` |
+| **Cloud** | `cloud` | `https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/` | `true` |
+| **Not Loaded** | `NOT SET` | `NOT SET` | `NOT SET` |
+
+### **6. Quy trình kiểm tra nhanh**
+
+```bash
+# 1. Kiểm tra hiện tại
+./check-environment.sh
+
+# 2. Load environment cần thiết
+./load-and-test-env.sh dev    # hoặc cloud
+
+# 3. Kiểm tra lại
+./check-environment.sh
+
+# 4. Build frontend
+npm run webapp:build
+
+# 5. Start backend
+./mvnw spring-boot:run        # hoặc với -Dspring.profiles.active=cloud
+```
+
+Bây giờ bạn có thể dễ dàng kiểm tra và chuyển đổi giữa các môi trường! 🚀 
