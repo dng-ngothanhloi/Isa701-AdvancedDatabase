@@ -77,26 +77,38 @@ public class WarehouseMgmtApp {
         String contextPath = Optional.ofNullable(env.getProperty("server.servlet.context-path"))
             .filter(StringUtils::isNotBlank)
             .orElse("/");
+        
+        // Get SERVER_API_URL from environment variable
+        String serverApiUrl = env.getProperty("SERVER_API_URL");
+        String localUrl;
+        
+        if (StringUtils.isNotBlank(serverApiUrl)) {
+            // Use SERVER_API_URL if available
+            localUrl = serverApiUrl;
+        } else {
+            // Fallback to localhost if SERVER_API_URL is not set
+            localUrl = protocol + "://localhost:" + serverPort + contextPath;
+        }
+        
         String hostAddress = "localhost";
         try {
             hostAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             LOG.warn("The host name could not be determined, using `localhost` as fallback");
         }
+        
         LOG.info(
             CRLFLogConverter.CRLF_SAFE_MARKER,
             """
 
             ----------------------------------------------------------
             \tApplication '{}' is running! Access URLs:
-            \tLocal: \t\t{}://localhost:{}{}
+            \tLocal: \t\t{}
             \tExternal: \t{}://{}:{}{}
             \tProfile(s): \t{}
             ----------------------------------------------------------""",
             applicationName,
-            protocol,
-            serverPort,
-            contextPath,
+            localUrl,
             protocol,
             hostAddress,
             serverPort,

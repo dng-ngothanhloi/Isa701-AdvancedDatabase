@@ -6,6 +6,46 @@ Hướng dẫn này giúp bạn deploy ứng dụng warehouse management system 
 
 ---
 
+## 🌍 **ENVIRONMENT SELECTION**
+
+### **🏠 Development Environment (Local)**
+```bash
+# Build và chạy cho local development
+./mvnw spring-boot:run -Pwebapp
+
+# Hoặc với development profile
+./mvnw spring-boot:run -Dspring.profiles.active=dev
+
+# Frontend sẽ call: http://localhost:8080
+# Backend chạy tại: http://localhost:8080
+```
+
+### **☁️ Cloud Environment (Codespaces)**
+```bash
+# Build và chạy cho cloud environment
+./mvnw spring-boot:run -Pcloud
+
+# Hoặc với cloud profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+
+# Frontend sẽ call: https://{codespace-id}-8080.app.github.dev
+# Backend chạy tại: https://{codespace-id}-8080.app.github.dev
+```
+
+### **🚀 Production Environment**
+```bash
+# Build cho production
+./mvnw clean package -Pprod
+
+# Chạy production JAR
+java -jar target/*.jar --spring.profiles.active=prod
+
+# Frontend sẽ call: Production URL
+# Backend chạy tại: Production URL
+```
+
+---
+
 ## 🌐 **CÁC DỊCH VỤ MIỄN PHÍ**
 
 ### **1. GitHub Codespaces**
@@ -63,7 +103,7 @@ Hướng dẫn này giúp bạn deploy ứng dụng warehouse management system 
 # Check status
 ./status.sh
 
-# Quick start
+# Quick start (Cloud environment)
 ./quick-start.sh
 
 # Deploy to Codespaces
@@ -72,8 +112,14 @@ Hướng dẫn này giúp bạn deploy ứng dụng warehouse management system 
 # Check environment
 ./smart-env.sh --check
 
-# Start development
+# Start development (Cloud)
 ./mvnw spring-boot:run -Pcloud
+
+# Set Codespace ID (nếu cần)
+./set-codespace-id.sh super-broccoli-pj96jxxr4p7q3945r
+
+# Test environment
+./test-codespace-env.sh
 ```
 
 ### **URL Access:**
@@ -99,7 +145,7 @@ Hướng dẫn này giúp bạn deploy ứng dụng warehouse management system 
 ### **Manual Deploy:**
 
 ```bash
-# Build locally
+# Build locally với cloud profile
 ./mvnw clean compile -Pcloud
 
 # Deploy to GitHub Pages
@@ -147,7 +193,7 @@ npx gh-pages -d target/classes/static
 
 2. **Deploy:**
    ```bash
-   # Build first
+   # Build first với cloud profile
    ./mvnw clean compile -Pcloud
    
    # Deploy
@@ -188,7 +234,7 @@ npx gh-pages -d target/classes/static
 # Install Netlify CLI
 npm i -g netlify-cli
 
-# Build
+# Build với cloud profile
 ./mvnw clean compile -Pcloud
 
 # Deploy
@@ -199,37 +245,56 @@ netlify deploy --prod --dir=target/classes/static
 
 ## 🔧 **ENVIRONMENT CONFIGURATION**
 
-### **Production Environment Variables:**
+### **Environment Variables by Environment:**
 
 ```bash
-# GitHub Pages
-SERVER_API_URL=https://username.github.io/repo-name/
-SERVER_API_URL_WS=wss://username.github.io/repo-name/
+# Development (Local)
+NODE_ENV=development
+SPRING_PROFILES_ACTIVE=dev
+SERVER_API_URL=http://localhost:8080/
+SERVER_API_URL_WS=ws://localhost:8080/
 
-# Vercel
-SERVER_API_URL=https://project-name.vercel.app/
-SERVER_API_URL_WS=wss://project-name.vercel.app/
+# Cloud (Codespaces)
+NODE_ENV=cloud
+SPRING_PROFILES_ACTIVE=cloud
+SERVER_API_URL=https://{codespace-id}-8080.app.github.dev/
+SERVER_API_URL_WS=wss://{codespace-id}-8080.app.github.dev/
 
-# Netlify
-SERVER_API_URL=https://project-name.netlify.app/
-SERVER_API_URL_WS=wss://project-name.netlify.app/
-
-# Codespaces
-SERVER_API_URL=https://codespace-name-8080.app.github.dev/
-SERVER_API_URL_WS=wss://codespace-name-8080.app.github.dev/
+# Production
+NODE_ENV=production
+SPRING_PROFILES_ACTIVE=prod
+SERVER_API_URL=https://your-production-domain.com/
+SERVER_API_URL_WS=wss://your-production-domain.com/
 ```
 
-### **Build Commands:**
+### **Build Commands by Environment:**
 
 ```bash
-# Development
+# Development (Local)
 ./mvnw spring-boot:run -Pwebapp
+# Frontend calls: http://localhost:8080
 
-# Cloud/Production
+# Cloud (Codespaces)
 ./mvnw spring-boot:run -Pcloud
+# Frontend calls: https://{codespace-id}-8080.app.github.dev
 
-# Build for deployment
-./mvnw clean compile -Pcloud
+# Production
+./mvnw clean package -Pprod
+java -jar target/*.jar --spring.profiles.active=prod
+# Frontend calls: Production URL
+```
+
+### **Environment Detection:**
+
+```bash
+# Check current environment
+./smart-env.sh --check
+
+# Test environment configuration
+./test-codespace-env.sh
+
+# Check environment variables
+./check-environment.sh
 ```
 
 ---
@@ -368,5 +433,15 @@ vercel --prod
 # 4. Deploy to Netlify
 netlify deploy --prod
 ```
+
+---
+
+## 🎯 **ENVIRONMENT SELECTION SUMMARY**
+
+| Environment | Command | Frontend API | Backend URL | Use Case |
+|-------------|---------|--------------|-------------|----------|
+| **🏠 Development** | `./mvnw spring-boot:run -Pwebapp` | `http://localhost:8080` | `http://localhost:8080` | Local development |
+| **☁️ Cloud** | `./mvnw spring-boot:run -Pcloud` | `https://{codespace-id}-8080.app.github.dev` | `https://{codespace-id}-8080.app.github.dev` | GitHub Codespaces |
+| **🚀 Production** | `./mvnw clean package -Pprod` | Production URL | Production URL | Production deployment |
 
 Bây giờ bạn có thể deploy ứng dụng lên các dịch vụ miễn phí của GitHub một cách dễ dàng! 🎉 

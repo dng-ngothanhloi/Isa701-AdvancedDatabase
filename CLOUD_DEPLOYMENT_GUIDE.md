@@ -6,6 +6,49 @@ Hướng dẫn này giúp bạn cấu hình ứng dụng warehouse management sy
 
 ---
 
+## 🌍 **ENVIRONMENT SELECTION**
+
+### **🏠 Development Environment (Local)**
+```bash
+# Build và chạy cho local development
+./mvnw spring-boot:run -Pwebapp
+
+# Hoặc với development profile
+./mvnw spring-boot:run -Dspring.profiles.active=dev
+
+# Frontend sẽ call: http://localhost:8080
+# Backend chạy tại: http://localhost:8080
+# Environment: Development
+```
+
+### **☁️ Cloud Environment (Codespaces)**
+```bash
+# Build và chạy cho cloud environment
+./mvnw spring-boot:run -Pcloud
+
+# Hoặc với cloud profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+
+# Frontend sẽ call: https://{codespace-id}-8080.app.github.dev
+# Backend chạy tại: https://{codespace-id}-8080.app.github.dev
+# Environment: Cloud
+```
+
+### **🚀 Production Environment**
+```bash
+# Build cho production
+./mvnw clean package -Pprod
+
+# Chạy production JAR
+java -jar target/*.jar --spring.profiles.active=prod
+
+# Frontend sẽ call: Production URL
+# Backend chạy tại: Production URL
+# Environment: Production
+```
+
+---
+
 ## 🚀 **SMART ENVIRONMENT MANAGEMENT**
 
 ### **1. Smart Environment Script**
@@ -30,16 +73,22 @@ node scripts/smart-env.js
 ./smart-env.sh
 ```
 
-### **2. Maven Cloud Profile**
+### **2. Maven Profiles**
 
-Đã tạo Maven profile `cloud` để tự động build frontend với cloud environment:
+Đã tạo các Maven profiles để tự động build frontend theo environment:
 
 ```bash
-# Chạy với cloud profile (tự động build frontend cloud)
-./mvnw spring-boot:run -Pcloud
+# Development Profile (Local)
+./mvnw spring-boot:run -Pwebapp
+# Frontend calls: http://localhost:8080
 
-# Override Spring profile (cũng tự động build frontend cloud)
-./mvnw spring-boot:run -Dspring.profiles.active=cloud
+# Cloud Profile (Codespaces)
+./mvnw spring-boot:run -Pcloud
+# Frontend calls: https://{codespace-id}-8080.app.github.dev
+
+# Production Profile
+./mvnw spring-boot:run -Pprod
+# Frontend calls: Production URL
 ```
 
 ### **3. Environment Detection Flow**
@@ -80,20 +129,31 @@ SERVER_API_URL: (() => {
     return process.env.SERVER_API_URL;
   }
   
-  // Check for NODE_ENV based configuration
+  // Check for NODE_ENV and SPRING_PROFILES_ACTIVE based configuration
   const nodeEnv = process.env.NODE_ENV || 'development';
+  const springProfile = process.env.SPRING_PROFILES_ACTIVE || '';
+  
+  // Cloud environment (GitHub Codespaces, etc.)
+  if (springProfile.includes('cloud')) {
+    return process.env.CLOUD_API_URL || module.exports.getCodespaceUrl('https');
+  }
+  
+  // Production environment (deployed to production servers)
+  if (nodeEnv === 'production' && !springProfile.includes('cloud')) {
+    return process.env.PROD_API_URL || '';
+  }
   
   switch (nodeEnv) {
     case 'production':
       return process.env.PROD_API_URL || '';
     case 'development':
-      return process.env.DEV_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
+      return process.env.DEV_API_URL || 'http://localhost:8080/';
     case 'test':
-      return process.env.TEST_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
+      return process.env.TEST_API_URL || 'http://localhost:8080/';
     case 'cloud':
-      return process.env.CLOUD_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
+      return process.env.CLOUD_API_URL || module.exports.getCodespaceUrl('https');
     default:
-      return process.env.DEFAULT_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
+      return process.env.DEFAULT_API_URL || 'http://localhost:8080/';
   }
 })(),
 ```
@@ -781,5 +841,15 @@ npm run webapp:build
 - ✅ `debug-cors-issues.sh` - Debug CORS issues
 - ✅ `maven-cloud.sh` - Run Maven with cloud profile
 - ✅ `test-cloud-build.sh` - Test cloud build process
+
+---
+
+## 🎯 **ENVIRONMENT SELECTION SUMMARY**
+
+| Environment | Command | Frontend API | Backend URL | Use Case |
+|-------------|---------|--------------|-------------|----------|
+| **🏠 Development** | `./mvnw spring-boot:run -Pwebapp` | `http://localhost:8080` | `http://localhost:8080` | Local development |
+| **☁️ Cloud** | `./mvnw spring-boot:run -Pcloud` | `https://{codespace-id}-8080.app.github.dev` | `https://{codespace-id}-8080.app.github.dev` | GitHub Codespaces |
+| **🚀 Production** | `./mvnw clean package -Pprod` | Production URL | Production URL | Production deployment |
 
 Bây giờ bạn có thể dễ dàng kiểm tra và chuyển đổi giữa các môi trường! 🚀 

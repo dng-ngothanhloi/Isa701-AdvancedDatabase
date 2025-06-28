@@ -2,6 +2,57 @@
 
 This application was generated using JHipster 8.10.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.10.0](https://www.jhipster.tech/documentation-archive/v8.10.0).
 
+## 🌍 **Environment Selection**
+
+### **🏠 Development Environment (Local)**
+```bash
+# Build and run for local development
+./mvnw spring-boot:run -Pwebapp
+
+# Or with development profile
+./mvnw spring-boot:run -Dspring.profiles.active=dev
+
+# Frontend will call: http://localhost:8080
+# Backend runs at: http://localhost:8080
+# Environment: Development
+```
+
+### **☁️ Cloud Environment (Codespaces)**
+```bash
+# Build and run for cloud environment
+./mvnw spring-boot:run -Pcloud
+
+# Or with cloud profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+
+# Frontend will call: https://{codespace-id}-8080.app.github.dev
+# Backend runs at: https://{codespace-id}-8080.app.github.dev
+# Environment: Cloud
+```
+
+### **🚀 Production Environment**
+```bash
+# Build for production
+./mvnw clean package -Pprod
+
+# Run production JAR
+java -jar target/*.jar --spring.profiles.active=prod
+
+# Frontend will call: Production URL
+# Backend runs at: Production URL
+# Environment: Production
+```
+
+### **🎯 Environment Summary**
+
+| Environment | Command | Frontend API | Backend URL | Use Case |
+|-------------|---------|--------------|-------------|----------|
+| **🏠 Development** | `./mvnw spring-boot:run -Pwebapp` | `http://localhost:8080` | `http://localhost:8080` | Local development |
+| **☁️ Cloud** | `./mvnw spring-boot:run -Pcloud` | `https://{codespace-id}-8080.app.github.dev` | `https://{codespace-id}-8080.app.github.dev` | GitHub Codespaces |
+| **🚀 Production** | `./mvnw clean package -Pprod` | Production URL | Production URL | Production deployment |
+
+---
+
 ## Project Structure
 
 Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
