@@ -31,11 +31,13 @@ SERVER_API_URL: (() => {
     case 'production':
       return process.env.PROD_API_URL || '';
     case 'development':
-      return process.env.DEV_API_URL || 'http://localhost:8080/';
+      return process.env.DEV_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
     case 'test':
-      return process.env.TEST_API_URL || 'http://localhost:8080/';
+      return process.env.TEST_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
+    case 'cloud':
+      return process.env.CLOUD_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
     default:
-      return process.env.DEFAULT_API_URL || '';
+      return process.env.DEFAULT_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
   }
 })(),
 ```
@@ -44,30 +46,46 @@ SERVER_API_URL: (() => {
 
 **Development (env.development):**
 ```bash
+# API Configuration
 SERVER_API_URL=http://localhost:8080/
 DEV_API_URL=http://localhost:8080/
-NODE_ENV=development
-CLOUD_DEPLOYMENT=false
-DEBUG=true
-```
+TEST_API_URL=http://localhost:8080/
+DEFAULT_API_URL=http://localhost:8080/
 
-**Production (env.production):**
-```bash
-# SERVER_API_URL=https://your-production-domain.com/
-# PROD_API_URL=https://your-production-domain.com/
-NODE_ENV=production
-CLOUD_DEPLOYMENT=true
-DEBUG=false
+# WebSocket Configuration
+SERVER_API_URL_WS=ws://localhost:8080/
+DEV_API_URL_WS=ws://localhost:8080/
+TEST_API_URL_WS=ws://localhost:8080/
+DEFAULT_API_URL_WS=ws://localhost:8080/
+
+# Environment
+NODE_ENV=development
+ENVIRONMENT=development
+DEBUG=true
+CLOUD_DEPLOYMENT=false
+APP_VERSION=DEV
 ```
 
 **Cloud (env.cloud):**
 ```bash
-# SERVER_API_URL=https://your-codespace-url.githubpreview.dev/
-# DEV_API_URL=https://your-codespace-url.githubpreview.dev/
-NODE_ENV=development
+# API Configuration
+SERVER_API_URL=https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+DEV_API_URL=https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+CLOUD_API_URL=https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+DEFAULT_API_URL=https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+
+# WebSocket Configuration
+SERVER_API_URL_WS=wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+DEV_API_URL_WS=wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+CLOUD_API_URL_WS=wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+DEFAULT_API_URL_WS=wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
+
+# Environment
+NODE_ENV=cloud
 ENVIRONMENT=cloud
-CLOUD_DEPLOYMENT=true
 DEBUG=true
+CLOUD_DEPLOYMENT=true
+APP_VERSION=CLOUD
 ```
 
 ### **3. Environment Variable Loader**
@@ -114,10 +132,12 @@ server:
 jhipster:
   cors:
     allowed-origins: '*'  # Allow all origins
-    allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev'
+    allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.app.github.dev'
     allowed-methods: '*'
     allowed-headers: '*'
     allow-credentials: true
+  security:
+    content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev https://*.githubpreview.dev https://*.codespaces.dev https://*.app.github.dev;"
 ```
 
 ### **2. Kích hoạt Cloud Profile**
@@ -141,7 +161,7 @@ export SPRING_PROFILES_ACTIVE=cloud
 ```yaml
 cors:
   allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:9060,https://localhost:9060'
-  allowed-origin-patterns: 'https://*.githubpreview.dev'
+  allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.github.dev'
   allowed-methods: '*'
   allowed-headers: '*'
   allow-credentials: true
@@ -151,10 +171,11 @@ cors:
 ```yaml
 cors:
   allowed-origins: '*'  # Allow all origins
-  allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.cloudflare.dev,https://*.vercel.app,https://*.netlify.app'
+  allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.cloudflare.dev,https://*.vercel.app,https://*.netlify.app,https://*.app.github.dev'
   allowed-methods: '*'
   allowed-headers: '*'
   allow-credentials: true
+  content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev https://*.githubpreview.dev https://*.codespaces.dev https://*.app.github.dev;"
 ```
 
 ### **2. CORS trong SecurityConfiguration**
@@ -225,10 +246,10 @@ public CorsFilter corsFilter() {
 **Chạy trong Codespaces:**
 ```bash
 # Load cloud environment
-./load-env.sh cloud
+export $(cat env.cloud | grep -v '^#' | xargs)
 
 # Build và chạy với cloud profile
-./mvnw clean compile
+npm run webapp:build
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 ```
 
@@ -451,7 +472,7 @@ jhipster:
 
 ```bash
 # Load environment variables
-./load-env.sh cloud
+export $(cat env.cloud | grep -v '^#' | xargs)
 
 # Start application with cloud profile
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
@@ -467,7 +488,7 @@ curl -X POST \
 
 ```bash
 # Load environment variables
-./load-env.sh cloud
+export $(cat env.cloud | grep -v '^#' | xargs)
 
 # Run with cloud profile
 ./mvnw exec:java \
@@ -496,7 +517,7 @@ export MONGODB_URI=mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/w
 ### **Pre-Deployment**
 - [ ] Cấu hình `application-cloud.yml`
 - [ ] Cấu hình `webpack/environment.js`
-- [ ] Tạo environment files (`env.development`, `env.production`, `env.cloud`)
+- [ ] Tạo environment files (`env.development`, `env.cloud`)
 - [ ] Test API configuration với `./test-api-config.sh`
 - [ ] Test CORS với domain thực tế
 - [ ] Verify MongoDB connection
@@ -504,7 +525,7 @@ export MONGODB_URI=mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/w
 - [ ] Test migration endpoints
 
 ### **Deployment**
-- [ ] Load environment variables với `./load-env.sh cloud`
+- [ ] Load environment variables với `export $(cat env.cloud | grep -v '^#' | xargs)`
 - [ ] Deploy với cloud profile
 - [ ] Verify application starts
 - [ ] Test CORS headers
@@ -553,7 +574,7 @@ Nếu gặp vấn đề với CORS hoặc cloud deployment:
 4. **Test CORS** with `./test-cors.sh`
 5. **Check network** connectivity
 6. **Review security** configuration
-7. **Verify environment variables** with `./load-env.sh`
+7. **Verify environment variables** with `export $(cat env.cloud | grep -v '^#' | xargs)`
 
 Ứng dụng đã được cấu hình để hỗ trợ đầy đủ các môi trường cloud và không gặp lỗi CORS khi deploy.
 
@@ -563,13 +584,13 @@ Nếu gặp vấn đề với CORS hoặc cloud deployment:
 
 ```bash
 # 1. Load cloud environment
-./load-env.sh cloud
+export $(cat env.cloud | grep -v '^#' | xargs)
 
 # 2. Test API configuration
 ./test-api-config.sh
 
 # 3. Build application
-./mvnw clean compile
+npm run webapp:build
 
 # 4. Start with cloud profile
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
