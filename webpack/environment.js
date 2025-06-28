@@ -5,5 +5,5 @@ module.exports = {
   // If this URL is left empty (""), then it will be relative to the current context.
   // If you use an API server, in `prod` mode, you will need to enable CORS
   // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
-  SERVER_API_URL: 'https://ideal-guide-4j6rjxx75qvw3g4v-8080.app.github.dev',
+  SERVER_API_URL: ' https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/',
 };
