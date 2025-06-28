@@ -6,7 +6,7 @@ module.exports = {
   // If you use an API server, in `prod` mode, you will need to enable CORS
   // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
   SERVER_API_URL: (() => {
-    // Check for explicit SERVER_API_URL environment variable
+    // Check for explicit SERVER_API_URL environment variable (highest priority)
     if (process.env.SERVER_API_URL) {
       return process.env.SERVER_API_URL;
     }
@@ -18,13 +18,13 @@ module.exports = {
       case 'production':
         return process.env.PROD_API_URL || '';
       case 'development':
-        return process.env.DEV_API_URL || 'http://localhost:8080/';
+        return process.env.DEV_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       case 'test':
-        return process.env.TEST_API_URL || 'http://localhost:8080/';
+        return process.env.TEST_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       case 'cloud':
         return process.env.CLOUD_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       default:
-        return process.env.DEFAULT_API_URL || 'http://localhost:8080/';
+        return process.env.DEFAULT_API_URL || 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
     }
   })(),
   // The root URL for the WebSocket, ending with a '/' - for example: `"https://www.jhipster.tech:8081/myservice/"`.
@@ -32,7 +32,7 @@ module.exports = {
   // If you use an API server, in `prod` mode, you will need to enable CORS
   // (see the `jhipster.cors` common JHipster property in the `application-*.yml` configurations)
   SERVER_API_URL_WS: (() => {
-    // Check for explicit SERVER_API_URL_WS environment variable
+    // Check for explicit SERVER_API_URL_WS environment variable (highest priority)
     if (process.env.SERVER_API_URL_WS) {
       return process.env.SERVER_API_URL_WS;
     }
@@ -44,13 +44,13 @@ module.exports = {
       case 'production':
         return process.env.PROD_API_URL_WS || '';
       case 'development':
-        return process.env.DEV_API_URL_WS || 'ws://localhost:8080/';
+        return process.env.DEV_API_URL_WS || 'wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       case 'test':
-        return process.env.TEST_API_URL_WS || 'ws://localhost:8080/';
+        return process.env.TEST_API_URL_WS || 'wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       case 'cloud':
         return process.env.CLOUD_API_URL_WS || 'wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
       default:
-        return process.env.DEFAULT_API_URL_WS || 'ws://localhost:8080/';
+        return process.env.DEFAULT_API_URL_WS || 'wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/';
     }
   })(),
   // MongoDB URI for cloud deployment

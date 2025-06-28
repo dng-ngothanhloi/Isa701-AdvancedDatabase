@@ -82,7 +82,7 @@ jhipster:
     # Alternative: restrict to specific domains
     # allowed-origins: 'https://your-domain.com,https://*.githubpreview.dev,https://*.codespaces.dev'
     # Enable CORS for GitHub Codespaces and other cloud platforms
-    allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.cloudflare.dev,https://*.vercel.app,https://*.netlify.app'
+    allowed-origin-patterns: 'https://*.githubpreview.dev,https://*.codespaces.dev,https://*.cloudflare.dev,https://*.vercel.app,https://*.netlify.app,https://*.app.github.dev'
     allowed-methods: '*'
     allowed-headers: '*'
     exposed-headers: 'Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params'
@@ -97,8 +97,10 @@ jhipster:
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
+    # Content Security Policy for cloud deployment
+    content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev https://*.githubpreview.dev https://*.codespaces.dev https://*.app.github.dev;"
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: ${SERVER_URL:http://localhost:8080} # Use environment variable for dynamic URL
+    base-url: ${SERVER_URL:https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev} # Use environment variable for dynamic URL
   logging:
     use-json-format: true # Use JSON format for cloud logging
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
