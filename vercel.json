@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "warehouse-management-system",
+  "builds": [
+    {
+      "src": "target/classes/static/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/target/classes/static/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "SERVER_API_URL": "https://warehouse-management-system.vercel.app/",
+    "SERVER_API_URL_WS": "wss://warehouse-management-system.vercel.app/"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+} 

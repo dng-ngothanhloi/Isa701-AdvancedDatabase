@@ -1,0 +1,28 @@
+[build]
+  publish = "target/classes/static"
+  command = "./mvnw clean compile -Pcloud"
+
+[build.environment]
+  NODE_VERSION = "22.14.0"
+  JAVA_VERSION = "17"
+  NODE_ENV = "production"
+  SERVER_API_URL = "https://warehouse-management-system.netlify.app/"
+  SERVER_API_URL_WS = "wss://warehouse-management-system.netlify.app/"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  NODE_ENV = "production"
+  SERVER_API_URL = "https://warehouse-management-system.netlify.app/"
+
+[context.deploy-preview.environment]
+  NODE_ENV = "production"
+  SERVER_API_URL = "https://deploy-preview-*.netlify.app/" 
