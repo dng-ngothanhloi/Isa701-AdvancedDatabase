@@ -6,6 +6,62 @@ Hướng dẫn này giúp bạn cấu hình ứng dụng warehouse management sy
 
 ---
 
+## 🚀 **SMART ENVIRONMENT MANAGEMENT**
+
+### **1. Smart Environment Script**
+
+Đã tạo script `scripts/smart-env.js` để tự động detect và build frontend theo environment:
+
+```bash
+# Kiểm tra environment hiện tại
+node scripts/smart-env.js --check
+
+# Build với auto-detect environment
+node scripts/smart-env.js --build
+
+# Kiểm tra và build (mặc định)
+node scripts/smart-env.js
+```
+
+**Hoặc sử dụng wrapper bash:**
+```bash
+./smart-env.sh --check
+./smart-env.sh --build
+./smart-env.sh
+```
+
+### **2. Maven Cloud Profile**
+
+Đã tạo Maven profile `cloud` để tự động build frontend với cloud environment:
+
+```bash
+# Chạy với cloud profile (tự động build frontend cloud)
+./mvnw spring-boot:run -Pcloud
+
+# Override Spring profile (cũng tự động build frontend cloud)
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+```
+
+### **3. Environment Detection Flow**
+
+```
+1. Maven Profile (pom.xml)
+   ↓
+2. spring.profiles.active property
+   ↓  
+3. frontend-maven-plugin environmentVariables
+   ↓
+4. SPRING_PROFILES_ACTIVE environment variable
+   ↓
+5. npm script (webapp:build:smart)
+   ↓
+6. smart-env.js script
+   ↓
+7. Auto-detect environment and build accordingly
+```
+
+---
+
 ## 🚀 **API ENDPOINT CONFIGURATION**
 
 ### **1. Environment.js Configuration**
@@ -143,7 +199,10 @@ jhipster:
 ### **2. Kích hoạt Cloud Profile**
 
 ```bash
-# Chạy với cloud profile
+# Chạy với cloud profile (tự động build frontend)
+./mvnw spring-boot:run -Pcloud
+
+# Hoặc override Spring profile (cũng tự động build frontend)
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 
 # Hoặc set environment variable
@@ -245,10 +304,14 @@ public CorsFilter corsFilter() {
 
 **Chạy trong Codespaces:**
 ```bash
-# Load cloud environment
-export $(cat env.cloud | grep -v '^#' | xargs)
+# Cách 1: Sử dụng Maven cloud profile (khuyến nghị)
+./mvnw spring-boot:run -Pcloud
 
-# Build và chạy với cloud profile
+# Cách 2: Override Spring profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+
+# Cách 3: Load environment và chạy thủ công
+export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 ```
@@ -336,6 +399,9 @@ curl -X POST \
 
 # Test CORS configuration
 ./test-cors.sh
+
+# Test Spring profiles
+./test-spring-profiles.sh
 ```
 
 ### **3. Test với JavaScript**
@@ -402,6 +468,9 @@ export SERVER_API_URL=https://your-domain.com/
 
 # Or use environment loader
 ./load-env.sh cloud
+
+# Or use Maven cloud profile
+./mvnw spring-boot:run -Pcloud
 ```
 
 **Lỗi: "API endpoint not reachable"**
@@ -440,6 +509,9 @@ echo $CLOUD_DEPLOYMENT
 
 # Test webpack configuration
 node -e "console.log(require('./webpack/environment.js'))"
+
+# Test smart environment
+./smart-env.sh --check
 ```
 
 ### **4. Security Considerations**
@@ -471,10 +543,14 @@ jhipster:
 ### **1. REST API Migration (Recommended for Cloud)**
 
 ```bash
-# Load environment variables
-export $(cat env.cloud | grep -v '^#' | xargs)
+# Cách 1: Sử dụng Maven cloud profile (khuyến nghị)
+./mvnw spring-boot:run -Pcloud
 
-# Start application with cloud profile
+# Cách 2: Override Spring profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+
+# Cách 3: Load environment thủ công
+export $(cat env.cloud | grep -v '^#' | xargs)
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 
 # Run migration from any origin
@@ -523,10 +599,11 @@ export MONGODB_URI=mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/w
 - [ ] Verify MongoDB connection
 - [ ] Set environment variables
 - [ ] Test migration endpoints
+- [ ] Test smart environment với `./smart-env.sh --check`
 
 ### **Deployment**
-- [ ] Load environment variables với `export $(cat env.cloud | grep -v '^#' | xargs)`
-- [ ] Deploy với cloud profile
+- [ ] Sử dụng Maven cloud profile: `./mvnw spring-boot:run -Pcloud`
+- [ ] Hoặc override Spring profile: `./mvnw spring-boot:run -Dspring.profiles.active=cloud`
 - [ ] Verify application starts
 - [ ] Test CORS headers
 - [ ] Test API endpoints
@@ -562,6 +639,12 @@ export MONGODB_URI=mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/w
 - ✅ Data migration completes successfully
 - ✅ Performance improvements achieved
 
+### **Smart Environment Success**
+- ✅ `./smart-env.sh --check` shows correct environment
+- ✅ Maven cloud profile builds frontend correctly
+- ✅ Both `-Pcloud` and `-Dspring.profiles.active=cloud` work
+- ✅ Frontend uses correct URLs for each environment
+
 ---
 
 ## 📞 **SUPPORT**
@@ -572,9 +655,10 @@ Nếu gặp vấn đề với CORS hoặc cloud deployment:
 2. **Verify profile** is set to `cloud`
 3. **Test API configuration** with `./test-api-config.sh`
 4. **Test CORS** with `./test-cors.sh`
-5. **Check network** connectivity
-6. **Review security** configuration
-7. **Verify environment variables** with `export $(cat env.cloud | grep -v '^#' | xargs)`
+5. **Test smart environment** with `./smart-env.sh --check`
+6. **Check network** connectivity
+7. **Review security** configuration
+8. **Verify environment variables** with `export $(cat env.cloud | grep -v '^#' | xargs)`
 
 Ứng dụng đã được cấu hình để hỗ trợ đầy đủ các môi trường cloud và không gặp lỗi CORS khi deploy.
 
@@ -677,5 +761,25 @@ npm run webapp:build
 # 5. Start backend
 ./mvnw spring-boot:run        # hoặc với -Dspring.profiles.active=cloud
 ```
+
+## 🆕 **NEW FEATURES**
+
+### **Smart Environment Management**
+- ✅ `scripts/smart-env.js` - Auto-detect environment and build
+- ✅ `smart-env.sh` - Bash wrapper for easy usage
+- ✅ Maven cloud profile - Automatic frontend build with cloud URLs
+- ✅ Environment detection from Spring profiles
+
+### **Maven Integration**
+- ✅ `-Pcloud` profile - Builds frontend with cloud environment
+- ✅ `-Dspring.profiles.active=cloud` - Also builds frontend with cloud environment
+- ✅ Automatic environment variable passing from Maven to npm
+- ✅ Smart build detection based on Spring profiles
+
+### **Testing Tools**
+- ✅ `test-spring-profiles.sh` - Test Spring profiles flow
+- ✅ `debug-cors-issues.sh` - Debug CORS issues
+- ✅ `maven-cloud.sh` - Run Maven with cloud profile
+- ✅ `test-cloud-build.sh` - Test cloud build process
 
 Bây giờ bạn có thể dễ dàng kiểm tra và chuyển đổi giữa các môi trường! 🚀 

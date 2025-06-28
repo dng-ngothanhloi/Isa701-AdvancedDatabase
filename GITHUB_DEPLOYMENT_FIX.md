@@ -14,6 +14,7 @@ Lỗi này xảy ra do:
 3. **Thiếu environment variables cho cloud deployment**
 4. **Node.js version mismatch**
 5. **Dependencies conflicts**
+6. **Frontend build sử dụng development environment thay vì cloud environment**
 
 ## 🛠️ **GIẢI PHÁP**
 
@@ -73,6 +74,14 @@ module.exports = {
   "name": "warehouse-mgmt",
   "engines": {
     "node": ">=22.14.0"
+  },
+  "scripts": {
+    "webapp:build": "npm run clean-www && npm run webapp:build:dev --",
+    "webapp:build:dev": "webpack --config webpack/webpack.dev.js --env stats=minimal",
+    "webapp:build:cloud": "NODE_ENV=production webpack --config webpack/webpack.cloud.js --env stats=minimal",
+    "webapp:build:smart": "npm run clean-www && npm run webapp:build:smart:detect --",
+    "webapp:build:smart:detect": "node scripts/smart-env.js",
+    "webapp:build:prod": "webpack --config webpack/webpack.prod.js --progress=profile"
   }
 }
 ```
@@ -121,7 +130,157 @@ CLOUD_DEPLOYMENT=false
 APP_VERSION=DEV
 ```
 
-### **Bước 2: Test Build Locally**
+### **Bước 2: Smart Environment Management**
+
+**1. Tạo scripts/smart-env.js:**
+```javascript
+#!/usr/bin/env node
+
+const { spawnSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
+
+// Get command line arguments
+const args = process.argv.slice(2);
+const isCheckOnly = args.includes('--check') || args.includes('-c');
+const isBuildOnly = args.includes('--build') || args.includes('-b');
+
+console.log('🔍 SMART ENVIRONMENT MANAGER');
+console.log('============================');
+
+// Get Spring profiles from environment variable
+const springProfiles = process.env.SPRING_PROFILES_ACTIVE || '';
+const nodeEnv = process.env.NODE_ENV || 'development';
+
+// Determine environment type
+let environmentType = 'UNKNOWN';
+let isCloudEnvironment = false;
+
+if (springProfiles.includes('cloud') || nodeEnv === 'production') {
+    environmentType = 'CLOUD';
+    isCloudEnvironment = true;
+} else if (springProfiles.includes('dev') || nodeEnv === 'development') {
+    environmentType = 'DEVELOPMENT';
+    isCloudEnvironment = false;
+}
+
+console.log(`🎯 Detected Environment: ${environmentType}`);
+
+// If check-only mode, exit here
+if (isCheckOnly) {
+    console.log('📊 ENVIRONMENT SUMMARY:');
+    if (isCloudEnvironment) {
+        console.log('🎯 Environment: CLOUD');
+        console.log('🌐 API will call: https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev');
+    } else {
+        console.log('🎯 Environment: DEVELOPMENT');
+        console.log('🌐 API will call: http://localhost:8080');
+    }
+    process.exit(0);
+}
+
+// Build functionality
+if (isBuildOnly || (!isCheckOnly && !isBuildOnly)) {
+    console.log('🔨 Building frontend...');
+    
+    if (isCloudEnvironment) {
+        console.log('🌐 Building for CLOUD environment');
+        console.log('   - Using webpack.cloud.js');
+        console.log('   - Setting NODE_ENV=production');
+        console.log('   - Using cloud URLs');
+        
+        // Set environment variables for cloud build
+        process.env.NODE_ENV = 'production';
+        process.env.SERVER_API_URL = 'https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev';
+        process.env.SERVER_API_URL_WS = 'wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev';
+        
+        // Run cloud build
+        const result = spawnSync('npm', ['run', 'webapp:build:cloud'], {
+            stdio: 'inherit',
+            env: process.env,
+            cwd: path.join(__dirname, '..')
+        });
+        
+        process.exit(result.status);
+    } else {
+        console.log('🏠 Building for DEVELOPMENT environment');
+        console.log('   - Using webpack.dev.js');
+        console.log('   - Setting NODE_ENV=development');
+        console.log('   - Using localhost URLs');
+        
+        // Set environment variables for dev build
+        process.env.NODE_ENV = 'development';
+        
+        // Run dev build
+        const result = spawnSync('npm', ['run', 'webapp:build:dev'], {
+            stdio: 'inherit',
+            env: process.env,
+            cwd: path.join(__dirname, '..')
+        });
+        
+        process.exit(result.status);
+    }
+}
+```
+
+**2. Tạo Maven cloud profile trong pom.xml:**
+```xml
+<profile>
+    <id>cloud</id>
+    <properties>
+        <!-- Spring profiles for cloud environment -->
+        <spring.profiles.active>cloud</spring.profiles.active>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>webapp build cloud</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>run webapp:build:cloud</arguments>
+                            <environmentVariables>
+                                <APP_VERSION>${project.version}</APP_VERSION>
+                                <NODE_ENV>production</NODE_ENV>
+                                <SERVER_API_URL>https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev</SERVER_API_URL>
+                                <SERVER_API_URL_WS>wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev</SERVER_API_URL_WS>
+                            </environmentVariables>
+                            <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</profile>
+```
+
+**3. Cập nhật webapp profile để sử dụng smart build:**
+```xml
+<execution>
+    <id>webapp build smart</id>
+    <goals>
+        <goal>npm</goal>
+    </goals>
+    <phase>generate-resources</phase>
+    <configuration>
+        <arguments>run webapp:build:smart</arguments>
+        <environmentVariables>
+            <APP_VERSION>${project.version}</APP_VERSION>
+            <SPRING_PROFILES_ACTIVE>${spring.profiles.active}</SPRING_PROFILES_ACTIVE>
+        </environmentVariables>
+        <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+    </configuration>
+</execution>
+```
+
+### **Bước 3: Test Build Locally**
 
 ```bash
 # Test với development environment
@@ -131,9 +290,19 @@ npm run webapp:build
 # Test với cloud environment
 export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
+
+# Test smart environment
+./smart-env.sh --check
+./smart-env.sh --build
+
+# Test Maven cloud profile
+./mvnw spring-boot:run -Pcloud
+
+# Test Spring profile override
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
 ```
 
-### **Bước 3: Debug Nếu Cần**
+### **Bước 4: Debug Nếu Cần**
 
 ```bash
 # Test webpack configuration
@@ -142,6 +311,9 @@ node -e "const env = require('./webpack/environment.js'); console.log('SERVER_AP
 # Test environment variables
 echo $NODE_ENV
 echo $SERVER_API_URL
+
+# Test Spring profiles
+./test-spring-profiles.sh
 ```
 
 ## 📋 **CÁC FILE ĐÃ ĐƯỢC SỬA**
@@ -156,13 +328,24 @@ echo $SERVER_API_URL
 ### **2. package.json**
 - ✅ Sửa package name từ "warehous-mmgmt" thành "warehouse-mgmt"
 - ✅ Thêm Node.js engine requirement
+- ✅ Thêm smart build scripts
 
 ### **3. Environment Files**
 - ✅ **env.development**: Cấu hình cho local development
 - ✅ **env.cloud**: Cấu hình cho cloud deployment
 - ✅ Đầy đủ URL variables cho cả API và WebSocket
 
-### **4. GitHub Actions Workflow**
+### **4. Smart Environment Management**
+- ✅ **scripts/smart-env.js**: Auto-detect environment and build
+- ✅ **smart-env.sh**: Bash wrapper for easy usage
+- ✅ **webpack/webpack.cloud.js**: Cloud-specific webpack configuration
+
+### **5. Maven Integration**
+- ✅ **cloud profile**: Automatic frontend build with cloud environment
+- ✅ **smart build**: Auto-detect environment based on Spring profiles
+- ✅ **Environment variable passing**: From Maven to npm
+
+### **6. GitHub Actions Workflow**
 - ✅ Tạo `.github/workflows/build-and-deploy.yml`
 - ✅ Cấu hình Node.js 22.14.0
 - ✅ Cấu hình Java 17
@@ -183,9 +366,16 @@ export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 
-# 3. Commit changes
+# 3. Test smart environment
+./smart-env.sh --check
+./smart-env.sh --build
+
+# 4. Test Maven cloud profile
+./mvnw spring-boot:run -Pcloud
+
+# 5. Commit changes
 git add .
-git commit -m "Fix npm build issues for GitHub deployment"
+git commit -m "Fix npm build issues and add smart environment management"
 git push origin main
 ```
 
@@ -233,6 +423,18 @@ npx tsc --noEmit --skipLibCheck
 export $(cat env.cloud | grep -v '^#' | xargs)
 echo $NODE_ENV
 echo $SERVER_API_URL
+
+# Test smart environment
+./smart-env.sh --check
+```
+
+### **Lỗi Maven Profile**
+```bash
+# Test Spring profiles
+./test-spring-profiles.sh
+
+# Test Maven cloud profile
+./mvnw help:evaluate -Dexpression=spring.profiles.active -Pcloud -q -DforceStdout
 ```
 
 ## 📁 **CÁC SCRIPT HỖ TRỢ**
@@ -257,6 +459,26 @@ echo $SERVER_API_URL
 - Set environment variables
 - Clean build process
 
+### **5. smart-env.sh**
+- Smart environment management
+- Auto-detect and build
+- Check environment status
+
+### **6. test-spring-profiles.sh**
+- Test Spring profiles flow
+- Verify environment variable passing
+- Debug Maven integration
+
+### **7. maven-cloud.sh**
+- Run Maven with cloud profile
+- Automatic frontend build
+- Cloud environment setup
+
+### **8. test-cloud-build.sh**
+- Test cloud build process
+- Verify cloud URLs
+- Check build artifacts
+
 ## 🌐 **ENVIRONMENT VARIABLES**
 
 ### **Cloud Deployment**
@@ -266,6 +488,7 @@ SERVER_API_URL=https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
 SERVER_API_URL_WS=wss://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev/
 APP_VERSION=CLOUD
 MONGODB_URI=mongodb+srv://Admin:Admin_1234@cluster0.bfpk1jw.mongodb.net/warehoure?retryWrites=true&w=majority&appName=Cluster0&tls=true
+SPRING_PROFILES_ACTIVE=cloud
 ```
 
 ### **Local Development**
@@ -274,6 +497,7 @@ NODE_ENV=development
 SERVER_API_URL=http://localhost:8080/
 SERVER_API_URL_WS=ws://localhost:8080/
 APP_VERSION=DEV
+SPRING_PROFILES_ACTIVE=dev
 ```
 
 ## 📊 **BUILD PROCESS**
@@ -287,6 +511,9 @@ npm run webapp:build
 # Cloud
 export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
+
+# Smart (auto-detect)
+./smart-env.sh --build
 ```
 
 ### **Backend Build**
@@ -295,6 +522,9 @@ npm run webapp:build
 ./mvnw spring-boot:run
 
 # Cloud
+./mvnw spring-boot:run -Pcloud
+
+# Override Spring profile
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
 ```
 
@@ -308,6 +538,10 @@ npm run webapp:build
 # Cloud
 export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
+./mvnw clean package -DskipTests -Pprod
+
+# Smart (auto-detect)
+./smart-env.sh --build
 ./mvnw clean package -DskipTests -Pprod
 ```
 
@@ -332,6 +566,12 @@ npm run webapp:build
 - ✅ Artifacts are uploaded
 - ✅ Deploy job completes
 - ✅ Application is accessible
+
+### **Smart Environment Success**
+- ✅ `./smart-env.sh --check` shows correct environment
+- ✅ Maven cloud profile builds frontend correctly
+- ✅ Both `-Pcloud` and `-Dspring.profiles.active=cloud` work
+- ✅ Frontend uses correct URLs for each environment
 
 ## 🆘 **EMERGENCY FIXES**
 
@@ -370,6 +610,8 @@ Nếu vẫn gặp vấn đề:
 4. **Check Node.js version** compatibility
 5. **Review webpack configuration**
 6. **Test environment loading** with `export $(cat env.cloud | grep -v '^#' | xargs)`
+7. **Test smart environment** with `./smart-env.sh --check`
+8. **Test Spring profiles** with `./test-spring-profiles.sh`
 
 ---
 
@@ -400,4 +642,54 @@ npm run webapp:build
 export $(cat env.cloud | grep -v '^#' | xargs)
 npm run webapp:build
 ./mvnw spring-boot:run -Dspring.profiles.active=cloud
-``` 
+```
+
+### **Smart Environment Switching**
+```bash
+# Auto-detect and build
+./smart-env.sh
+
+# Check current environment
+./smart-env.sh --check
+
+# Build for specific environment
+./smart-env.sh --build
+```
+
+### **Maven Profile Switching**
+```bash
+# Development (default)
+./mvnw spring-boot:run -Pwebapp
+
+# Cloud
+./mvnw spring-boot:run -Pcloud
+
+# Override Spring profile
+./mvnw spring-boot:run -Dspring.profiles.active=cloud
+```
+
+## 🆕 **NEW FEATURES**
+
+### **Smart Environment Management**
+- ✅ `scripts/smart-env.js` - Auto-detect environment and build
+- ✅ `smart-env.sh` - Bash wrapper for easy usage
+- ✅ Maven cloud profile - Automatic frontend build with cloud URLs
+- ✅ Environment detection from Spring profiles
+
+### **Maven Integration**
+- ✅ `-Pcloud` profile - Builds frontend with cloud environment
+- ✅ `-Dspring.profiles.active=cloud` - Also builds frontend with cloud environment
+- ✅ Automatic environment variable passing from Maven to npm
+- ✅ Smart build detection based on Spring profiles
+
+### **Testing Tools**
+- ✅ `test-spring-profiles.sh` - Test Spring profiles flow
+- ✅ `debug-cors-issues.sh` - Debug CORS issues
+- ✅ `maven-cloud.sh` - Run Maven with cloud profile
+- ✅ `test-cloud-build.sh` - Test cloud build process
+
+### **Build Process**
+- ✅ Smart build detection
+- ✅ Automatic environment switching
+- ✅ Cloud-specific webpack configuration
+- ✅ Environment variable management 

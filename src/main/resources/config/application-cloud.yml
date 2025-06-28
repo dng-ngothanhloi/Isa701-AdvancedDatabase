@@ -102,7 +102,7 @@ jhipster:
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: ${SERVER_URL:https://super-broccoli-pj96jxxr4p7q3945r-8080.app.github.dev} # Use environment variable for dynamic URL
   logging:
-    use-json-format: true # Use JSON format for cloud logging
+    use-json-format: false # Disable JSON format to avoid logstash dependency
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
       enabled: false
       host: localhost
